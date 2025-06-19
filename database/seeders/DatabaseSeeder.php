@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Models\Comment;
+use App\Models\Project;
+use App\Models\Task;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,11 +18,54 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // Create a main user for testing
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // Create 10 random users
+        $users = User::factory(10)->create();
+
+        // Create 5 projects
+        Project::factory(5)
+            ->create()
+            ->each(function ($project) use ($users) {
+                // Attach 1 to 3 random users to each project
+                $project->users()->attach(
+                    $users->random(rand(1, 3))->pluck('id')->toArray()
+                );
+
+                // Create 5 to 10 tasks for each project
+                Task::factory(rand(5, 10))
+                    ->create(['project_id' => $project->id])
+                    ->each(function ($task) use ($users) {
+                        // Create comments for the task
+                        Comment::factory(rand(0, 3))
+                            ->create([
+                                'user_id' => $users->random()->id,
+                                'commentable_id' => $task->id,
+                                'commentable_type' => Task::class,
+                            ]);
+
+                        // 50% chance to create sub-tasks
+                        if (rand(0, 1)) {
+                            Task::factory(rand(1, 5))
+                                ->create([
+                                    'project_id' => $task->project_id,
+                                    'parent_id' => $task->id,
+                                ])
+                                ->each(function ($subtask) use ($users) {
+                                    // Create comments for the sub-task
+                                    Comment::factory(rand(0, 2))
+                                        ->create([
+                                            'user_id' => $users->random()->id,
+                                            'commentable_id' => $subtask->id,
+                                            'commentable_type' => Task::class,
+                                        ]);
+                                });
+                        }
+                    });
+            });
     }
 }
