@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Enum\TaskStatus;
+use App\Models\Project;
+use App\Models\Task;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,9 +21,26 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->foreignId('project_id')->constrained()->onDelete('cascade');
-            $table->foreignId('parent_id')->nullable()->constrained('tasks')->onDelete('cascade');
-            $table->timestamp('completed_at')->nullable();
+            $table->enum('status', TaskStatus::values())->default(TaskStatus::TODO->value);
+
+            $table->foreignIdFor(Project::class)
+                ->constrained()
+                ->onDelete('cascade');
+
+            $table->foreignIdFor(Task::class, 'parent_id')
+                ->nullable()
+                ->constrained('tasks')
+                ->onDelete('cascade');
+
+            $table->foreignIdFor(User::class, 'created_by')
+                ->constrained('users')
+                ->onDelete('cascade');
+
+            $table->foreignIdFor(User::class, 'assigned_to')
+                ->nullable()
+                ->constrained('users')
+                ->onDelete('cascade');
+
             $table->timestamps();
         });
     }

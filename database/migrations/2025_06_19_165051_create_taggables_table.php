@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Models\Tag;
+use App\Models\Task;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,8 +16,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('task_tag', function (Blueprint $table) {
-            $table->foreignId('task_id')->constrained()->onDelete('cascade');
-            $table->foreignId('tag_id')->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Task::class)
+                ->constrained()
+                ->onDelete('cascade');
+
+            $table->foreignIdFor(Tag::class)
+                ->constrained()
+                ->onDelete('cascade');
+
             $table->primary(['task_id', 'tag_id']);
         });
     }

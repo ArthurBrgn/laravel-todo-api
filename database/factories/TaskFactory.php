@@ -23,7 +23,6 @@ class TaskFactory extends Factory
             'name' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
             'project_id' => Project::factory(),
-            'completed_at' => null,
         ];
     }
 }

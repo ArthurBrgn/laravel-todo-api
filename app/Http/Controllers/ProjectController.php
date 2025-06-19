@@ -5,15 +5,19 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Project;
-use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
-    public function __invoke(Request $request)
+    public function index()
     {
-        return Project::all();
+        return Project::all()->toResourceCollection();
+    }
+
+    public function tasks(Project $project)
+    {
+        return $project->tasks()
+            ->with(['createdBy', 'assignedTo'])
+            ->get()
+            ->toResourceCollection();
     }
 }
