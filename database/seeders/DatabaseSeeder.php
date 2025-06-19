@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Comment;
 use App\Models\Project;
+use App\Models\Tag;
 use App\Models\Task;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -27,10 +28,13 @@ class DatabaseSeeder extends Seeder
         // Create 10 random users
         $users = User::factory(10)->create();
 
+        // Create 10 tags
+        $tags = Tag::factory(10)->create();
+
         // Create 5 projects
         Project::factory(5)
             ->create()
-            ->each(function ($project) use ($users) {
+            ->each(function ($project) use ($users, $tags) {
                 // Attach 1 to 3 random users to each project
                 $project->users()->attach(
                     $users->random(rand(1, 3))->pluck('id')->toArray()
@@ -39,13 +43,17 @@ class DatabaseSeeder extends Seeder
                 // Create 5 to 10 tasks for each project
                 Task::factory(rand(5, 10))
                     ->create(['project_id' => $project->id])
-                    ->each(function ($task) use ($users) {
+                    ->each(function ($task) use ($users, $tags) {
+                        // Attach 1 to 3 random tags to each task
+                        $task->tags()->attach(
+                            $tags->random(rand(1, 3))->pluck('id')->toArray()
+                        );
+
                         // Create comments for the task
                         Comment::factory(rand(0, 3))
                             ->create([
                                 'user_id' => $users->random()->id,
-                                'commentable_id' => $task->id,
-                                'commentable_type' => Task::class,
+                                'task_id' => $task->id,
                             ]);
 
                         // 50% chance to create sub-tasks
@@ -55,13 +63,17 @@ class DatabaseSeeder extends Seeder
                                     'project_id' => $task->project_id,
                                     'parent_id' => $task->id,
                                 ])
-                                ->each(function ($subtask) use ($users) {
+                                ->each(function ($subtask) use ($users, $tags) {
+                                    // Attach 1 to 3 random tags to each sub-task
+                                    $subtask->tags()->attach(
+                                        $tags->random(rand(1, 3))->pluck('id')->toArray()
+                                    );
+
                                     // Create comments for the sub-task
                                     Comment::factory(rand(0, 2))
                                         ->create([
                                             'user_id' => $users->random()->id,
-                                            'commentable_id' => $subtask->id,
-                                            'commentable_type' => Task::class,
+                                            'task_id' => $subtask->id,
                                         ]);
                                 });
                         }
