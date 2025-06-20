@@ -4,15 +4,59 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enum\TaskStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Task extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
+
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'status' => TaskStatus::TODO->value,
+        'number' => null,
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'number',
+        'title',
+        'description',
+        'status',
+    ];
+
+    /**
+     * Generate task number
+     */
+    protected static function booted(): void
+    {
+        static::creating(fn (Task $task) => $task->number = rand(100000, 999999));
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'status' => TaskStatus::class,
+        ];
+    }
 
     public function project(): BelongsTo
     {

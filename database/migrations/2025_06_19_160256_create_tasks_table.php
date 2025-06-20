@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enum\TaskPoints;
 use App\Enum\TaskStatus;
 use App\Models\Project;
 use App\Models\Task;
@@ -20,8 +21,10 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger('number')->unique();
             $table->text('description')->nullable();
             $table->enum('status', TaskStatus::values())->default(TaskStatus::TODO->value);
+            $table->enum('points', TaskPoints::values());
 
             $table->foreignIdFor(Project::class)
                 ->constrained()
@@ -42,6 +45,8 @@ return new class extends Migration
                 ->onDelete('cascade');
 
             $table->timestamps();
+
+            $table->softDeletes();
         });
     }
 

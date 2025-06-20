@@ -19,7 +19,7 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->catchPhrase,
+            'name' => $this->faker->unique()->catchPhrase,
             'description' => $this->faker->realText(),
         ];
     }

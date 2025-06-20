@@ -15,9 +15,12 @@ class ProjectController extends Controller
 
     public function tasks(Project $project)
     {
-        return $project->tasks()
+        $tasks = $project->tasks()
             ->with(['createdBy', 'assignedTo'])
             ->get()
-            ->toResourceCollection();
+            ->groupBy('status')
+            ->map(fn ($group) => $group->toResourceCollection());
+
+        return response()->json($tasks);
     }
 }
