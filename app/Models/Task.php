@@ -27,18 +27,6 @@ class Task extends Model
     ];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'number',
-        'title',
-        'description',
-        'status',
-    ];
-
-    /**
      * Generate task number
      */
     protected static function booted(): void
@@ -78,7 +66,7 @@ class Task extends Model
         return $this->belongsTo(Task::class, 'parent_id');
     }
 
-    public function children(): HasMany
+    public function subTasks(): HasMany
     {
         return $this->hasMany(Task::class, 'parent_id');
     }
