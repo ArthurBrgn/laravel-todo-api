@@ -23,7 +23,7 @@ test('get tasks for project', function () {
     $response = $this->getJson('/api/projects/'.$project->id.'/tasks');
 
     $response
-        ->assertStatus(200)
+        ->assertOk()
         ->assertJsonIsObject();
 
     foreach (TaskStatus::values() as $status) {
@@ -55,7 +55,7 @@ test('task list is empty', function () {
     $response = $this->getJson('/api/projects/'.$project->id.'/tasks');
 
     $response
-        ->assertStatus(200)
+        ->assertOk()
         ->assertJsonIsArray()
         ->assertJsonCount(0);
 });

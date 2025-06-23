@@ -10,7 +10,8 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        return Project::simplePaginate(20)->toResourceCollection();
+        return Project::simplePaginate()
+            ->toResourceCollection();
     }
 
     public function tasks(Project $project)
