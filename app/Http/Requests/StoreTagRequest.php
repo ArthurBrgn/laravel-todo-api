@@ -8,7 +8,7 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CreateTagRequest extends FormRequest
+class StoreTagRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,15 +25,20 @@ class CreateTagRequest extends FormRequest
      */
     public function rules(): array
     {
+        $projectId = $this->route('project')?->id ?? $this->tag?->project_id;
+
+        $tagId = $this->tag?->id;
+
         return [
             'name' => [
                 'required',
                 'string',
                 'min:3',
                 'max:255',
-                Rule::unique('tags')->where(function (Builder $query) {
-                    return $query->where('project_id', $this->route('project')->id);
-                }),
+                // Ensure the tag is unique within the project context
+                Rule::unique('tags', 'name')
+                    ->where('project_id', $projectId)
+                    ->ignore($tagId),
             ],
         ];
     }
