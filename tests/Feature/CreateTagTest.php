@@ -39,3 +39,11 @@ test('create tag with short name fails', function () {
     $response->assertUnprocessable()
         ->assertJsonValidationErrors(['name']);
 });
+
+test('project not found when creating tag', function () {
+    $response = $this->postJson('/api/projects/999/tags', [
+        'name' => 'New Tag',
+    ]);
+
+    $response->assertNotFound();
+});

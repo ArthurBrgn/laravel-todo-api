@@ -6,7 +6,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SearchTaskRequest extends FormRequest
+class SearchTagRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,6 @@ class SearchTaskRequest extends FormRequest
     {
         return [
             'searchTerm' => ['required', 'string', 'min:3', 'max:255'],
-            'projectId' => ['sometimes', 'exists:projects,id'],
         ];
     }
 }

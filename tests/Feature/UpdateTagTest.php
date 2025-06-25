@@ -38,3 +38,11 @@ test('update tag with existing name fails', function () {
     $response->assertUnprocessable()
         ->assertJsonValidationErrors(['name']);
 });
+
+test('tag not found when updating', function () {
+    $response = $this->patchJson('/api/tags/999', [
+        'name' => 'Updated Tag',
+    ]);
+
+    $response->assertNotFound();
+});

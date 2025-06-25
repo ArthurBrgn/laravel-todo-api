@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SearchTagRequest;
 use App\Http\Requests\StoreTagRequest;
 use App\Models\Project;
 use App\Models\Tag;
@@ -16,7 +17,21 @@ class TagController extends Controller
      */
     public function index(Project $project)
     {
-        return $project->tags()->simplePaginate()
+        return $project->tags()
+            ->simplePaginate()
+            ->toResourceCollection();
+    }
+
+    /**
+     * Search for tags by project
+     */
+    public function search(Project $project, SearchTagRequest $request)
+    {
+        $searchTerm = $request->validated('searchTerm');
+
+        return $project->tags()
+            ->where('name', 'like', "%{$searchTerm}%")
+            ->simplePaginate()
             ->toResourceCollection();
     }
 

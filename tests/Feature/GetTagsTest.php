@@ -20,3 +20,9 @@ test('get tag list', function () {
             ->has('data', 15)
         );
 });
+
+test('project not found when getting tags', function () {
+    $response = $this->getJson('/api/projects/999/tags');
+
+    $response->assertNotFound();
+});

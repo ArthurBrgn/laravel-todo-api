@@ -59,3 +59,9 @@ test('task list is empty', function () {
         ->assertJsonIsArray()
         ->assertJsonCount(0);
 });
+
+test('project not found', function () {
+    $response = $this->getJson('/api/projects/999/tasks');
+
+    $response->assertNotFound();
+});
