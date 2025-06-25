@@ -8,6 +8,8 @@ use App\Http\Requests\SearchTagRequest;
 use App\Http\Requests\StoreTagRequest;
 use App\Models\Project;
 use App\Models\Tag;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
 class TagController extends Controller
@@ -15,7 +17,7 @@ class TagController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Project $project)
+    public function index(Project $project): AnonymousResourceCollection
     {
         return $project->tags()
             ->simplePaginate()
@@ -25,7 +27,7 @@ class TagController extends Controller
     /**
      * Search for tags by project
      */
-    public function search(Project $project, SearchTagRequest $request)
+    public function search(Project $project, SearchTagRequest $request): AnonymousResourceCollection
     {
         $searchTerm = $request->validated('searchTerm');
 
@@ -38,7 +40,7 @@ class TagController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Project $project, StoreTagRequest $request)
+    public function store(Project $project, StoreTagRequest $request): JsonResponse
     {
         $tag = $project->tags()->create([
             'name' => $request->validated('name'),
@@ -53,7 +55,7 @@ class TagController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreTagRequest $request, Tag $tag)
+    public function update(StoreTagRequest $request, Tag $tag): JsonResponse
     {
         $tag->update($request->validated());
 
@@ -63,10 +65,10 @@ class TagController extends Controller
     /**
      * Remove the specified resource.
      */
-    public function destroy(Tag $tag)
+    public function destroy(Tag $tag): JsonResponse
     {
         $tag->delete();
 
-        return response()->noContent();
+        return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }

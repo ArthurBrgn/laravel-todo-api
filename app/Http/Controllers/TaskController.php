@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SearchTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
+use App\Queries\SearchTaskQuery;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class TaskController extends Controller
@@ -19,16 +20,7 @@ class TaskController extends Controller
         $searchTerm = $request->validated('searchTerm');
         $projectId = $request->validated('projectId');
 
-        $tasks = Task::query()
-            ->with(['createdBy', 'assignedTo'])
-            ->withCount('subTasks')
-            ->when($projectId, function ($query) use ($projectId) {
-                return $query->where('project_id', $projectId);
-            })
-            ->whereLike('name', "%$searchTerm%")
-            ->orWhereLike('description', "%$searchTerm%")
-            ->orWhereLike('number', "%$searchTerm%")
-            ->get();
+        $tasks = SearchTaskQuery::handle(Task::query(), $searchTerm, $projectId)->get();
 
         return TaskResource::collection($tasks);
     }
