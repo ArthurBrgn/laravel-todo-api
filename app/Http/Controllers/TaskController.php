@@ -8,14 +8,14 @@ use App\Http\Requests\SearchTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use App\Queries\SearchTaskQuery;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class TaskController extends Controller
+final class TaskController extends Controller
 {
     /**
      * Search for tasks based on a search term and optional project ID.
      */
-    public function search(SearchTaskRequest $request): AnonymousResourceCollection
+    public function search(SearchTaskRequest $request): ResourceCollection
     {
         $searchTerm = $request->validated('searchTerm');
         $projectId = $request->validated('projectId');

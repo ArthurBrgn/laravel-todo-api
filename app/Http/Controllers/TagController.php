@@ -9,15 +9,15 @@ use App\Http\Requests\StoreTagRequest;
 use App\Models\Project;
 use App\Models\Tag;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
 
-class TagController extends Controller
+final class TagController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Project $project): AnonymousResourceCollection
+    public function index(Project $project): ResourceCollection
     {
         return $project->tags()
             ->simplePaginate()
@@ -27,7 +27,7 @@ class TagController extends Controller
     /**
      * Search for tags by project
      */
-    public function search(Project $project, SearchTagRequest $request): AnonymousResourceCollection
+    public function search(Project $project, SearchTagRequest $request): ResourceCollection
     {
         $searchTerm = $request->validated('searchTerm');
 

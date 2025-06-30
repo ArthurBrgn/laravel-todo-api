@@ -17,8 +17,8 @@ test('search tasks successfully', function () {
 
     $response
         ->assertOk()
-        ->assertJsonIsObject()
-        ->assertJsonCount(1, 'data')
+        ->assertJsonIsArray()
+        ->assertJsonCount(1)
         ->assertJsonFragment(['id' => $task1->id, 'name' => 'Test Task 1']);
 });
 
