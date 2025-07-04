@@ -6,7 +6,7 @@ namespace App\Queries;
 
 use Illuminate\Database\Eloquent\Builder;
 
-class SearchTaskQuery
+final class SearchTaskQuery
 {
     /**
      * Search for tasks based on a search term and optional project ID.

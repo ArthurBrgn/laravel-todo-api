@@ -11,7 +11,7 @@ Route::prefix('projects')->group(function () {
     Route::get('/', [ProjectController::class, 'index']);
     Route::get('/{project}/tasks', [ProjectController::class, 'tasks']);
     Route::get('/{project}/tags/search', [TagController::class, 'search']);
-    Route::post('/{project}/users/{user}/add', [ProjectController::class, 'addUser']);
+    Route::post('/{project}/users/{user}/associate', [ProjectController::class, 'associateUser']);
 });
 
 Route::apiResource('projects.tags', TagController::class)

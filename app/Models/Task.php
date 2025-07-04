@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Task extends Model
+final class Task extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -31,7 +31,7 @@ class Task extends Model
      */
     protected static function booted(): void
     {
-        static::creating(fn (Task $task) => $task->number = rand(100000, 999999));
+        self::creating(fn (Task $task) => $task->number = rand(100000, 999999));
     }
 
     /**
