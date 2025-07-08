@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enum\TaskStatus;
+use App\Exceptions\InvalidTaskStatusTransitionException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -32,6 +33,16 @@ final class Task extends Model
     protected static function booted(): void
     {
         self::creating(fn (Task $task) => $task->number = rand(100000, 999999));
+
+        self::updating(function (Task $task) {
+            if ($task->isDirty('status')) {
+                $oldStatus = $task->getOriginal('status');
+
+                if (! $oldStatus->canTransitionTo($task->status)) {
+                    throw new InvalidTaskStatusTransitionException($oldStatus, $task->status);
+                }
+            }
+        });
     }
 
     /**

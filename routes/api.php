@@ -17,4 +17,7 @@ Route::prefix('projects')->group(function () {
 Route::apiResource('projects.tags', TagController::class)
     ->shallow()->except(['show']);
 
-Route::get('/tasks/search', [TaskController::class, 'search']);
+Route::prefix('tasks')->group(function () {
+    Route::get('/search', [TaskController::class, 'search']);
+    Route::patch('/{task}/status', [TaskController::class, 'updateStatus']);
+});

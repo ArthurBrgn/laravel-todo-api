@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SearchTaskRequest;
+use App\Http\Requests\UpdateTaskStatusRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use App\Queries\SearchTaskQuery;
@@ -23,5 +24,12 @@ final class TaskController extends Controller
         $tasks = SearchTaskQuery::handle(Task::query(), $searchTerm, $projectId)->get();
 
         return TaskResource::collection($tasks);
+    }
+
+    public function updateStatus(Task $task, UpdateTaskStatusRequest $request): TaskResource
+    {
+        $task->update(['status' => $request->validated('status')]);
+
+        return $task->toResource();
     }
 }

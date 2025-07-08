@@ -20,7 +20,7 @@ test('get tasks for project', function () {
             ->create(['status' => $status]);
     }
 
-    $response = $this->getJson('/api/projects/'.$project->id.'/tasks');
+    $response = $this->getJson("/api/projects/{$project->id}/tasks");
 
     $response
         ->assertOk()
@@ -52,7 +52,7 @@ test('get tasks for project', function () {
 test('task list is empty', function () {
     $project = Project::factory()->create();
 
-    $response = $this->getJson('/api/projects/'.$project->id.'/tasks');
+    $response = $this->getJson("/api/projects/{$project->id}/tasks");
 
     $response
         ->assertOk()

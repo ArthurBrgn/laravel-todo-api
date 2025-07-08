@@ -33,7 +33,7 @@ test('user already present', function () {
 
     $response->assertStatus(Response::HTTP_CONFLICT)
         ->assertExactJson(
-            ['message' => 'Cet utilisateur est déjà présent dans le projet.']
+            ['error' => 'Cet utilisateur est déjà présent dans le projet.']
         );
 });
 
