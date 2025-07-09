@@ -8,6 +8,7 @@ use App\Http\Requests\SearchTaskRequest;
 use App\Http\Requests\UpdateTaskStatusRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
+use App\Models\User;
 use App\Queries\SearchTaskQuery;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
@@ -29,6 +30,19 @@ final class TaskController extends Controller
     public function updateStatus(Task $task, UpdateTaskStatusRequest $request): TaskResource
     {
         $task->update(['status' => $request->validated('status')]);
+
+        return $task->toResource();
+    }
+
+    public function assign(Task $task, ?User $user): TaskResource
+    {
+        if ($user === null) {
+            $task->assignedTo()->dissociate();
+
+            $task->save();
+        }
+
+        $task->assignedTo()->associate($user);
 
         return $task->toResource();
     }

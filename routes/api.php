@@ -20,4 +20,5 @@ Route::apiResource('projects.tags', TagController::class)
 Route::prefix('tasks')->group(function () {
     Route::get('/search', [TaskController::class, 'search']);
     Route::patch('/{task}/status', [TaskController::class, 'updateStatus']);
+    Route::post('/{task}/assign/{user?}', [TaskController::class, 'assign']);
 });

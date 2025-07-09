@@ -53,23 +53,33 @@ test('status does not exists', function () {
         ->assertJsonValidationErrors(['status']);
 });
 
-test('cannot transition', function () {
-    $project = Project::factory()->create();
-    $user = User::factory()->create();
+test('cannot transition to new status', function () {
+    $cases = TaskStatus::cases();
 
-    $task = Task::factory()
-        ->for($project)
-        ->for($user, 'createdBy')
-        ->create();
+    foreach ($cases as $case) {
+        $allowedTransitions = $case->allowedTransitions();
 
-    $newStatus = TaskStatus::DONE->value;
+        $newStatusesToTest = array_udiff($cases, [...$allowedTransitions, $case], function (TaskStatus $a, TaskStatus $b) {
+            return $a->value <=> $b->value;
+        });
 
-    $response = $this->patchJson("/api/tasks/{$task->id}/status", [
-        'status' => $newStatus,
-    ]);
+        foreach ($newStatusesToTest as $newStatus) {
+            $project = Project::factory()->create();
+            $user = User::factory()->create();
 
-    $response->assertStatus(Response::HTTP_CONFLICT)
-        ->assertExactJson(
-            ['error' => "Transtion du statut {$task->status->value} à {$newStatus} impossible"]
-        );
+            $task = Task::factory()
+                ->for($project)
+                ->for($user, 'createdBy')
+                ->create(['status' => $case]);
+
+            $response = $this->patchJson("/api/tasks/{$task->id}/status", [
+                'status' => $newStatus->value,
+            ]);
+
+            $response->assertStatus(Response::HTTP_CONFLICT)
+                ->assertExactJson(
+                    ['error' => "Transtion du statut {$task->status->value} à {$newStatus->value} impossible"]
+                );
+        }
+    }
 });
