@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\AssignTaskAction;
+use App\Http\Requests\AssignTaskRequest;
 use App\Http\Requests\SearchTaskRequest;
 use App\Http\Requests\UpdateTaskStatusRequest;
 use App\Http\Resources\TaskResource;
@@ -34,17 +36,12 @@ final class TaskController extends Controller
         return $task->toResource();
     }
 
-    public function assign(Task $task, ?User $user): TaskResource
+    public function assign(Task $task, AssignTaskRequest $request, AssignTaskAction $action): TaskResource
     {
-        if ($user === null) {
-            $task->assignedTo()->dissociate();
-        } else {
-            $task->assignedTo()->associate($user);
-        }
-
-        $task->save();
-
-        $task->refresh();
+        $action->handle(
+            $task,
+            User::find($request->validated('user_id'))
+        );
 
         return $task->toResource();
     }

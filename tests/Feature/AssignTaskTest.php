@@ -7,15 +7,17 @@ use App\Models\Task;
 use App\Models\User;
 
 test('assign task successfully', function () {
-    $project = Project::factory()->create();
     $user = User::factory()->create();
+    $project = Project::factory()->hasAttached($user)->create();
 
     $task = Task::factory()
         ->for($project)
         ->for($user, 'createdBy')
         ->create();
 
-    $response = $this->postJson("/api/tasks/{$task->id}/assign/{$user->id}");
+    $response = $this->postJson("/api/tasks/{$task->id}/assign", [
+        'user_id' => $user->id,
+    ]);
 
     $response->assertOk()
         ->assertJsonIsObject()
@@ -23,8 +25,8 @@ test('assign task successfully', function () {
 });
 
 test('unassign task successfully', function () {
-    $project = Project::factory()->create();
     $user = User::factory()->create();
+    $project = Project::factory()->create();
 
     $task = Task::factory()
         ->for($project)
@@ -32,7 +34,9 @@ test('unassign task successfully', function () {
         ->for($user, 'assignedTo')
         ->create();
 
-    $response = $this->postJson("/api/tasks/{$task->id}/assign");
+    $response = $this->postJson("/api/tasks/{$task->id}/assign", [
+        'user_id' => null,
+    ]);
 
     $response->assertOk()
         ->assertJsonIsObject()
@@ -40,7 +44,9 @@ test('unassign task successfully', function () {
 });
 
 test('task not found', function () {
-    $response = $this->postJson('/api/tasks/999/assign');
+    $response = $this->postJson('/api/tasks/999/assign', [
+        'user_id' => 999,
+    ]);
 
     $response->assertNotFound();
 });
@@ -54,7 +60,10 @@ test('user not found', function () {
         ->for($user, 'createdBy')
         ->create();
 
-    $response = $this->postJson("/api/tasks/{$task->id}/assign/999");
+    $response = $this->postJson("/api/tasks/{$task->id}/assign", [
+        'user_id' => 999,
+    ]);
 
-    $response->assertNotFound();
+    $response->assertUnprocessable()
+        ->assertJsonValidationErrors(['user_id']);
 });
