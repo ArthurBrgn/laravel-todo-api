@@ -42,6 +42,11 @@ final class User extends Authenticatable
         return $this->belongsToMany(Project::class);
     }
 
+    public function assignedTasks(): HasMany
+    {
+        return $this->hasMany(Task::class);
+    }
+
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);

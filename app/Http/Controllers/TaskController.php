@@ -38,11 +38,13 @@ final class TaskController extends Controller
     {
         if ($user === null) {
             $task->assignedTo()->dissociate();
-
-            $task->save();
+        } else {
+            $task->assignedTo()->associate($user);
         }
 
-        $task->assignedTo()->associate($user);
+        $task->save();
+
+        $task->refresh();
 
         return $task->toResource();
     }
