@@ -2,10 +2,14 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
+
+Route::post('/login', LoginController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('projects')->group(function () {
@@ -24,4 +28,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/{task}/assign', [TaskController::class, 'assign']);
         Route::post('/{task}/unassign', [TaskController::class, 'unassign']);
     });
+
+    Route::post('/logout', LogoutController::class);
 });

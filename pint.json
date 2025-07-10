@@ -23,9 +23,6 @@
       "on_multiline": "ensure_fully_multiline"
     },
     "compact_nullable_typehint": true,
-    "trailing_comma_in_multiline": {
-      "elements": ["arrays"]
-    },
     "return_type_declaration": {
       "space_before": "none"
     }

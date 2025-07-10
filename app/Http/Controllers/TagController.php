@@ -69,6 +69,6 @@ final class TagController extends Controller
     {
         $tag->delete();
 
-        return response()->json(null, Response::HTTP_NO_CONTENT);
+        return response()->json([], Response::HTTP_NO_CONTENT);
     }
 }

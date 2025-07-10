@@ -24,6 +24,8 @@ test('get tasks for project', function () {
 
     $response = $this->getJson("/api/projects/{$project->id}/tasks");
 
+    $this->assertAuthenticatedAs($this->user);
+
     $response
         ->assertOk()
         ->assertJsonIsObject();
