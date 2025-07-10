@@ -4,43 +4,32 @@ declare(strict_types=1);
 
 use App\Models\Project;
 use App\Models\Task;
-use App\Models\User;
 
-test('assign task successfully', function () {
-    $user = User::factory()->create();
-    $project = Project::factory()->hasAttached($user)->create();
-
-    $task = Task::factory()
-        ->for($project)
-        ->for($user, 'createdBy')
-        ->create();
-
-    $response = $this->postJson("/api/tasks/{$task->id}/assign", [
-        'user_id' => $user->id,
-    ]);
-
-    $response->assertOk()
-        ->assertJsonIsObject()
-        ->assertJsonPath('assigned_to.id', $user->id);
+beforeEach(function () {
+    $this->user = $this->authenticateUser();
 });
 
-test('unassign task successfully', function () {
-    $user = User::factory()->create();
-    $project = Project::factory()->create();
+test('assign task successfully', function () {
+    $project = Project::factory()->hasAttached($this->user)->create();
 
     $task = Task::factory()
         ->for($project)
-        ->for($user, 'createdBy')
-        ->for($user, 'assignedTo')
+        ->for($this->user, 'createdBy')
         ->create();
 
     $response = $this->postJson("/api/tasks/{$task->id}/assign", [
-        'user_id' => null,
+        'user_id' => $this->user->id,
     ]);
 
     $response->assertOk()
         ->assertJsonIsObject()
-        ->assertJson(['assigned_to' => null]);
+        ->assertJsonPath('assigned_to.id', $this->user->id);
+
+    $this->assertDatabaseHas('tasks', [
+        'id' => $task->id,
+        'project_id' => $project->id,
+        'assigned_to' => $this->user->id,
+    ]);
 });
 
 test('task not found', function () {
@@ -53,11 +42,10 @@ test('task not found', function () {
 
 test('user not found', function () {
     $project = Project::factory()->create();
-    $user = User::factory()->create();
 
     $task = Task::factory()
         ->for($project)
-        ->for($user, 'createdBy')
+        ->for($this->user, 'createdBy')
         ->create();
 
     $response = $this->postJson("/api/tasks/{$task->id}/assign", [

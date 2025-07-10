@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 use App\Models\Project;
 
+beforeEach(function () {
+    $this->user = $this->authenticateUser();
+});
+
 test('create tag successfully', function () {
     $project = Project::factory()->create();
 

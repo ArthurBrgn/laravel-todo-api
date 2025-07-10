@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 use App\Models\Project;
 use App\Models\Task;
-use App\Models\User;
+
+beforeEach(function () {
+    $this->user = $this->authenticateUser();
+});
 
 test('search tasks successfully', function () {
-    $user = User::factory()->create();
     $project = Project::factory()->create();
 
-    $task1 = Task::factory()->for($project)->for($user, 'createdBy')->create(['name' => 'Test Task 1']);
-    Task::factory()->for($project)->for($user, 'createdBy')->create(['name' => 'Another Task']);
+    $task1 = Task::factory()->for($project)->for($this->user, 'createdBy')->create(['name' => 'Test Task 1']);
+    Task::factory()->for($project)->for($this->user, 'createdBy')->create(['name' => 'Another Task']);
 
     $response = $this->getJson('/api/tasks/search?searchTerm=Test');
 

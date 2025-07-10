@@ -4,32 +4,33 @@ declare(strict_types=1);
 
 use App\Http\Resources\UserResource;
 use App\Models\Project;
-use App\Models\User;
 use Symfony\Component\HttpFoundation\Response;
+
+beforeEach(function () {
+    $this->user = $this->authenticateUser();
+});
 
 test('add user to project successfully', function () {
     $project = Project::factory()->create();
-    $user = User::factory()->create();
 
-    $response = $this->postJson("/api/projects/{$project->id}/users/{$user->id}/associate");
+    $response = $this->postJson("/api/projects/{$project->id}/users/{$this->user->id}/associate");
 
     $response->assertOk()
         ->assertJsonIsObject()
         ->assertExactJson(
-            (new UserResource($user))->resolve()
+            (new UserResource($this->user))->resolve()
         );
 
     $this->assertDatabaseHas('project_user', [
         'project_id' => $project->id,
-        'user_id' => $user->id,
+        'user_id' => $this->user->id,
     ]);
 });
 
 test('user already present', function () {
-    $user = User::factory()->create();
-    $project = Project::factory()->hasAttached($user)->create();
+    $project = Project::factory()->hasAttached($this->user)->create();
 
-    $response = $this->postJson("/api/projects/{$project->id}/users/{$user->id}/associate");
+    $response = $this->postJson("/api/projects/{$project->id}/users/{$this->user->id}/associate");
 
     $response->assertStatus(Response::HTTP_CONFLICT)
         ->assertExactJson(
@@ -38,9 +39,7 @@ test('user already present', function () {
 });
 
 test('project doesn\'t exists', function () {
-    $user = User::factory()->create();
-
-    $response = $this->postJson("/api/projects/999/users/{$user->id}/associate");
+    $response = $this->postJson("/api/projects/999/users/{$this->user->id}/associate");
 
     $response->assertNotFound();
 });

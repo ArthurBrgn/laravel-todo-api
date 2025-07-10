@@ -24,7 +24,7 @@ final class AssignTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['nullable', 'exists:users,id'],
+            'user_id' => ['exists:users,id'],
         ];
     }
 }

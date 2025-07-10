@@ -5,18 +5,20 @@ declare(strict_types=1);
 use App\Enum\TaskStatus;
 use App\Models\Project;
 use App\Models\Task;
-use App\Models\User;
+
+beforeEach(function () {
+    $this->user = $this->authenticateUser();
+});
 
 test('get tasks for project', function () {
     $project = Project::factory()->create();
-    $user = User::factory()->create();
 
     $taskStatuses = TaskStatus::cases();
 
     foreach ($taskStatuses as $status) {
         Task::factory()
             ->for($project)
-            ->for($user, 'createdBy')
+            ->for($this->user, 'createdBy')
             ->create(['status' => $status]);
     }
 
@@ -45,7 +47,7 @@ test('get tasks for project', function () {
         ]);
 
         $response->assertJsonPath("{$status}.0.status", $status);
-        $response->assertJsonPath("{$status}.0.created_by.email", $user->email);
+        $response->assertJsonPath("{$status}.0.created_by.email", $this->user->email);
     }
 });
 

@@ -5,8 +5,11 @@ declare(strict_types=1);
 use App\Enum\TaskStatus;
 use App\Models\Project;
 use App\Models\Task;
-use App\Models\User;
 use Illuminate\Http\Response;
+
+beforeEach(function () {
+    $this->user = $this->authenticateUser();
+});
 
 test('update task status successfully', function () {
     $cases = TaskStatus::cases();
@@ -14,11 +17,10 @@ test('update task status successfully', function () {
     foreach ($cases as $case) {
         foreach ($case->allowedTransitions() as $newStatus) {
             $project = Project::factory()->create();
-            $user = User::factory()->create();
 
             $task = Task::factory()
                 ->for($project)
-                ->for($user, 'createdBy')
+                ->for($this->user, 'createdBy')
                 ->create(['status' => $case]);
 
             $newStatus = $newStatus->value;
@@ -38,11 +40,10 @@ test('update task status successfully', function () {
 
 test('status does not exists', function () {
     $project = Project::factory()->create();
-    $user = User::factory()->create();
 
     $task = Task::factory()
         ->for($project)
-        ->for($user, 'createdBy')
+        ->for($this->user, 'createdBy')
         ->create();
 
     $response = $this->patchJson("/api/tasks/{$task->id}/status", [
@@ -59,17 +60,16 @@ test('cannot transition to new status', function () {
     foreach ($cases as $case) {
         $allowedTransitions = $case->allowedTransitions();
 
-        $newStatusesToTest = array_udiff($cases, [...$allowedTransitions, $case], function (TaskStatus $a, TaskStatus $b) {
+        $newStatusesToTest = \array_udiff($cases, [...$allowedTransitions, $case], function (TaskStatus $a, TaskStatus $b) {
             return $a->value <=> $b->value;
         });
 
         foreach ($newStatusesToTest as $newStatus) {
             $project = Project::factory()->create();
-            $user = User::factory()->create();
 
             $task = Task::factory()
                 ->for($project)
-                ->for($user, 'createdBy')
+                ->for($this->user, 'createdBy')
                 ->create(['status' => $case]);
 
             $response = $this->patchJson("/api/tasks/{$task->id}/status", [

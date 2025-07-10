@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Traits\WithSanctumUser;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 |
 */
 
-pest()->extend(Tests\TestCase::class)
-    ->use(RefreshDatabase::class)
+\pest()->extend(Tests\TestCase::class)
+    ->use(RefreshDatabase::class, WithSanctumUser::class)
     ->in('Feature');
