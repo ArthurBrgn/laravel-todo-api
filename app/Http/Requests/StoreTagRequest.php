@@ -24,7 +24,7 @@ final class StoreTagRequest extends FormRequest
      */
     public function rules(): array
     {
-        $projectId = $this->route('project')?->id ?? $this->tag?->project_id;
+        $projectId = $this->route('project')->id ?? $this->tag?->project_id;
 
         $tagId = $this->tag?->id;
 

@@ -24,7 +24,7 @@ final class SearchTagRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'searchTerm' => ['required', 'string', 'min:3', 'max:255'],
+            'search' => ['required', 'string', 'min:3', 'max:255'],
         ];
     }
 }

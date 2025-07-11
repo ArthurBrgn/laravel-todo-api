@@ -10,10 +10,10 @@ use App\Models\User;
 final class TaskPolicy
 {
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the user can interact with the task
      */
-    public function update(User $user, Task $task): bool
+    public function interactWith(User $user, Task $task): bool
     {
-        return false;
+        return $task->project->users()->where('users.id', $user->id)->exists();
     }
 }

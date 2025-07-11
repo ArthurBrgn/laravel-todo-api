@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Dtos\SearchTaskDto;
 use App\Http\Requests\AssignTaskRequest;
 use App\Http\Requests\SearchTaskRequest;
 use App\Http\Requests\UpdateTaskStatusRequest;
@@ -12,6 +13,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Queries\SearchTaskQuery;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Support\Facades\Gate;
 
 final class TaskController extends Controller
 {
@@ -20,23 +22,24 @@ final class TaskController extends Controller
      */
     public function search(SearchTaskRequest $request): ResourceCollection
     {
-        $searchTerm = $request->validated('searchTerm');
-        $projectId = $request->validated('projectId');
-
-        $tasks = SearchTaskQuery::handle(Task::query(), $searchTerm, $projectId)->get();
+        $tasks = SearchTaskQuery::handle(Task::query(), SearchTaskDto::fromRequest($request))->get();
 
         return TaskResource::collection($tasks);
     }
 
     public function updateStatus(Task $task, UpdateTaskStatusRequest $request): TaskResource
     {
+        Gate::authorize('interactWith', $task);
+
         $task->update(['status' => $request->validated('status')]);
 
-        return $task->toResource();
+        return new TaskResource($task);
     }
 
     public function assign(Task $task, AssignTaskRequest $request): TaskResource
     {
+        Gate::authorize('interactWith', $task);
+
         $user = User::find($request->validated('user_id'));
 
         $task->assignedTo()->associate($user);
@@ -45,17 +48,19 @@ final class TaskController extends Controller
 
         $task->refresh();
 
-        return $task->toResource();
+        return new TaskResource($task);
     }
 
     public function unassign(Task $task): TaskResource
     {
+        Gate::authorize('interactWith', $task);
+
         $task->assignedTo()->dissociate();
 
         $task->save();
 
         $task->refresh();
 
-        return $task->toResource();
+        return new TaskResource($task);
     }
 }

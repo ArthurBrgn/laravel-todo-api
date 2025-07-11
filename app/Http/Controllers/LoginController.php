@@ -7,11 +7,12 @@ namespace App\Http\Controllers;
 use App\Exceptions\InvalidCredentialsException;
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
 final class LoginController extends Controller
 {
-    public function __invoke(LoginRequest $request)
+    public function __invoke(LoginRequest $request): JsonResponse
     {
         if (! Auth::attempt($request->safe()->only(['email', 'password']))) {
             throw new InvalidCredentialsException;

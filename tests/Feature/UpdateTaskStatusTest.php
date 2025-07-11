@@ -16,7 +16,7 @@ test('update task status successfully', function () {
 
     foreach ($cases as $case) {
         foreach ($case->allowedTransitions() as $newStatus) {
-            $project = Project::factory()->create();
+            $project = Project::factory()->hasAttached($this->user)->create();
 
             $task = Task::factory()
                 ->for($project)
@@ -36,6 +36,21 @@ test('update task status successfully', function () {
                 ]);
         }
     }
+});
+
+test('user authorized', function () {
+    $project = Project::factory()->create();
+
+    $task = Task::factory()
+        ->for($project)
+        ->for($this->user, 'createdBy')
+        ->create(['status' => TaskStatus::TODO]);
+
+    $response = $this->patchJson("/api/tasks/{$task->id}/status", [
+        'status' => TaskStatus::DOING->value,
+    ]);
+
+    $response->assertForbidden();
 });
 
 test('status does not exists', function () {
@@ -65,7 +80,7 @@ test('cannot transition to new status', function () {
         });
 
         foreach ($newStatusesToTest as $newStatus) {
-            $project = Project::factory()->create();
+            $project = Project::factory()->hasAttached($this->user)->create();
 
             $task = Task::factory()
                 ->for($project)

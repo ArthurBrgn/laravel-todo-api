@@ -24,8 +24,9 @@ final class SearchTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'searchTerm' => ['required', 'string', 'min:3', 'max:255'],
+            'search' => ['required', 'string', 'min:3', 'max:255'],
             'projectId' => ['sometimes', 'exists:projects,id'],
+            'tags' => ['sometimes', 'exists:tags,id'],
         ];
     }
 }

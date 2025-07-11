@@ -15,7 +15,7 @@ test('search tasks successfully', function () {
     $task1 = Task::factory()->for($project)->for($this->user, 'createdBy')->create(['name' => 'Test Task 1']);
     Task::factory()->for($project)->for($this->user, 'createdBy')->create(['name' => 'Another Task']);
 
-    $response = $this->getJson('/api/tasks/search?searchTerm=Test');
+    $response = $this->getJson('/api/tasks/search?search=Test');
 
     $response
         ->assertOk()
@@ -29,19 +29,19 @@ test('search term not present', function () {
 
     $response
         ->assertUnprocessable()
-        ->assertJsonValidationErrors(['searchTerm']);
+        ->assertJsonValidationErrors(['search']);
 });
 
 test('search term too short', function () {
-    $response = $this->getJson('/api/tasks/search?searchTerm=X');
+    $response = $this->getJson('/api/tasks/search?search=X');
 
     $response
         ->assertUnprocessable()
-        ->assertJsonValidationErrors(['searchTerm']);
+        ->assertJsonValidationErrors(['search']);
 });
 
 test('project not found', function () {
-    $response = $this->getJson('/api/tasks/search?searchTerm=Test&projectId=999');
+    $response = $this->getJson('/api/tasks/search?search=Test&projectId=999');
 
     $response
         ->assertUnprocessable()

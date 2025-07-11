@@ -10,7 +10,7 @@ beforeEach(function () {
 });
 
 test('unassign task successfully', function () {
-    $project = Project::factory()->create();
+    $project = Project::factory()->hasAttached($this->user)->create();
 
     $task = Task::factory()
         ->for($project)
@@ -29,6 +29,20 @@ test('unassign task successfully', function () {
         'project_id' => $project->id,
         'assigned_to' => null,
     ]);
+});
+
+test('user not in project', function () {
+    $project = Project::factory()->create();
+
+    $task = Task::factory()
+        ->for($project)
+        ->for($this->user, 'createdBy')
+        ->for($this->user, 'assignedTo')
+        ->create();
+
+    $response = $this->postJson("/api/tasks/{$task->id}/unassign");
+
+    $response->assertForbidden();
 });
 
 test('task not found', function () {

@@ -9,11 +9,11 @@ use App\Http\Resources\UserResource;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 final class ProjectController extends Controller
 {
-    public function index(): AnonymousResourceCollection
+    public function index(): ResourceCollection
     {
         return Project::simplePaginate()
             ->toResourceCollection();
@@ -30,7 +30,7 @@ final class ProjectController extends Controller
         return response()->json($tasks);
     }
 
-    public function associateUser(Project $project, User $user): UserResource|JsonResponse
+    public function associateUser(Project $project, User $user): UserResource
     {
         $isUserAlreadyPresent = $project->users()
             ->where('users.id', $user->id)->exists();
@@ -41,6 +41,6 @@ final class ProjectController extends Controller
 
         $project->users()->attach($user);
 
-        return $user->toResource();
+        return new UserResource($user);
     }
 }

@@ -29,10 +29,10 @@ final class TagController extends Controller
      */
     public function search(Project $project, SearchTagRequest $request): ResourceCollection
     {
-        $searchTerm = $request->validated('searchTerm');
+        $search = $request->validated('search');
 
         return $project->tags()
-            ->where('name', 'like', "%{$searchTerm}%")
+            ->where('name', 'like', "%{$search}%")
             ->simplePaginate()
             ->toResourceCollection();
     }

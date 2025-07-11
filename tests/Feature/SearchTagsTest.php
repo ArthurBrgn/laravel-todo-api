@@ -15,7 +15,7 @@ test('search tags successfully', function () {
     $tag1 = Tag::factory()->for($project)->create(['name' => 'Test Tag 1']);
     Tag::factory()->for($project)->create(['name' => 'Another Tag']);
 
-    $response = $this->getJson('/api/projects/'.$project->id.'/tags/search?searchTerm=Test');
+    $response = $this->getJson('/api/projects/'.$project->id.'/tags/search?search=Test');
 
     $response
         ->assertOk()
@@ -31,21 +31,21 @@ test('search term not present', function () {
 
     $response
         ->assertUnprocessable()
-        ->assertJsonValidationErrors(['searchTerm']);
+        ->assertJsonValidationErrors(['search']);
 });
 
 test('search term too short', function () {
     $project = Project::factory()->create();
 
-    $response = $this->getJson('/api/projects/'.$project->id.'/tags/search?searchTerm=X');
+    $response = $this->getJson('/api/projects/'.$project->id.'/tags/search?search=X');
 
     $response
         ->assertUnprocessable()
-        ->assertJsonValidationErrors(['searchTerm']);
+        ->assertJsonValidationErrors(['search']);
 });
 
 test('project not found', function () {
-    $response = $this->getJson('/api/projects/999999/tags/search?searchTerm=Test');
+    $response = $this->getJson('/api/projects/999999/tags/search?search=Test');
 
     $response->assertNotFound();
 });

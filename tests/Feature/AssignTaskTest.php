@@ -32,6 +32,21 @@ test('assign task successfully', function () {
     ]);
 });
 
+test('user auauthorized', function () {
+    $project = Project::factory()->create();
+
+    $task = Task::factory()
+        ->for($project)
+        ->for($this->user, 'createdBy')
+        ->create();
+
+    $response = $this->postJson("/api/tasks/{$task->id}/assign", [
+        'user_id' => $this->user->id,
+    ]);
+
+    $response->assertForbidden();
+});
+
 test('task not found', function () {
     $response = $this->postJson('/api/tasks/999/assign', [
         'user_id' => 999,
