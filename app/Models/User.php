@@ -44,7 +44,7 @@ final class User extends Authenticatable
 
     public function assignedTasks(): HasMany
     {
-        return $this->hasMany(Task::class);
+        return $this->hasMany(Task::class, 'assigned_to_id');
     }
 
     public function comments(): HasMany

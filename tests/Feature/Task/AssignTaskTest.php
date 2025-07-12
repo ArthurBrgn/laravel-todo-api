@@ -28,7 +28,7 @@ test('assign task successfully', function () {
     $this->assertDatabaseHas('tasks', [
         'id' => $task->id,
         'project_id' => $project->id,
-        'assigned_to' => $this->user->id,
+        'assigned_to_id' => $this->user->id,
     ]);
 });
 

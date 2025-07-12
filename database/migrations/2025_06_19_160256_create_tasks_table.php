@@ -35,11 +35,11 @@ return new class extends Migration
                 ->constrained('tasks')
                 ->onDelete('cascade');
 
-            $table->foreignIdFor(User::class, 'created_by')
+            $table->foreignIdFor(User::class, 'created_by_id')
                 ->constrained('users')
                 ->onDelete('cascade');
 
-            $table->foreignIdFor(User::class, 'assigned_to')
+            $table->foreignIdFor(User::class, 'assigned_to_id')
                 ->nullable()
                 ->constrained('users')
                 ->onDelete('cascade');

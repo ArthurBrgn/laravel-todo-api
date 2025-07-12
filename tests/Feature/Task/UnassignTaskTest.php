@@ -27,7 +27,7 @@ test('unassign task successfully', function () {
     $this->assertDatabaseHas('tasks', [
         'id' => $task->id,
         'project_id' => $project->id,
-        'assigned_to' => null,
+        'assigned_to_id' => null,
     ]);
 });
 

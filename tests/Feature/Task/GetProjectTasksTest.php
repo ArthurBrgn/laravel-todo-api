@@ -37,13 +37,7 @@ test('get tasks for project', function () {
                     'id', 'name', 'description', 'status',
                     'created_by' => ['id', 'name', 'email'],
                     'assigned_to', 'created_at', 'updated_at',
-                    'sub_tasks' => [
-                        '*' => [
-                            'id', 'name', 'description', 'status',
-                            'created_by' => ['id', 'name', 'email'],
-                            'assigned_to', 'created_at', 'updated_at',
-                        ],
-                    ],
+                    'sub_tasks_count',
                 ],
             ],
         ]);

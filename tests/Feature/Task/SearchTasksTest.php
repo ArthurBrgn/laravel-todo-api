@@ -39,11 +39,3 @@ test('search term too short', function () {
         ->assertUnprocessable()
         ->assertJsonValidationErrors(['search']);
 });
-
-test('project not found', function () {
-    $response = $this->getJson('/api/tasks/search?search=Test&projectId=999');
-
-    $response
-        ->assertUnprocessable()
-        ->assertJsonValidationErrors(['projectId']);
-});

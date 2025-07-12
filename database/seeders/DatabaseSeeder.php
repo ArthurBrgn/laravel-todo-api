@@ -42,7 +42,7 @@ final class DatabaseSeeder extends Seeder
                     ->hasComments(rand(0, 3), [
                         'user_id' => $projectUsers->random(),
                     ])
-                    ->create(['project_id' => $project->id, 'created_by' => $projectUsers->random()])
+                    ->create(['project_id' => $project->id, 'created_by_id' => $projectUsers->random()])
                     ->each(function (Task $task) use ($projectUsers, $tags) {
                         // Attach 1 to 3 random tags to each task
                         $task->tags()->attach(
@@ -58,7 +58,7 @@ final class DatabaseSeeder extends Seeder
                                 ->create([
                                     'project_id' => $task->project_id,
                                     'parent_id' => $task->id,
-                                    'created_by' => $projectUsers->random(),
+                                    'created_by_id' => $projectUsers->random(),
                                 ])
                                 ->each(function ($subtask) use ($tags) {
                                     // Attach 1 to 3 random tags to each sub-task

@@ -24,6 +24,7 @@ final class TaskResource extends JsonResource
             'created_by' => new UserResource($this->whenLoaded('createdBy')),
             'assigned_to' => new UserResource($this->whenLoaded('assignedTo')),
             'sub_tasks' => TaskResource::collection($this->whenLoaded('subTasks')),
+            'parent' => new TaskResource($this->whenLoaded('parent')),
             'sub_tasks_count' => $this->whenCounted('subTasks'),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

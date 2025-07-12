@@ -6,6 +6,8 @@ namespace App\Models;
 
 use App\Enum\TaskStatus;
 use App\Exceptions\InvalidTaskStatusTransitionException;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -57,6 +59,12 @@ final class Task extends Model
         ];
     }
 
+    #[Scope]
+    protected function onlyParents(Builder $query): Builder
+    {
+        return $query->whereNull('parent_id');
+    }
+
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
@@ -64,12 +72,12 @@ final class Task extends Model
 
     public function createdBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'created_by');
+        return $this->belongsTo(User::class, 'created_by_id');
     }
 
     public function assignedTo(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'assigned_to');
+        return $this->belongsTo(User::class, 'assigned_to_id');
     }
 
     public function parent(): BelongsTo

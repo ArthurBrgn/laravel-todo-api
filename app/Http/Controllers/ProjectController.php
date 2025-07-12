@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Dtos\GetProjectTasksDto;
 use App\Exceptions\UserAlreadyInProjectException;
+use App\Http\Requests\GetProjectTasksRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Project;
 use App\Models\User;
+use App\Queries\GetProjectTasksQuery;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
@@ -19,10 +22,13 @@ final class ProjectController extends Controller
             ->toResourceCollection();
     }
 
-    public function tasks(Project $project): JsonResponse
+    public function tasks(Project $project, GetProjectTasksRequest $request): JsonResponse
     {
-        $tasks = $project->tasks()
-            ->with(['createdBy', 'assignedTo', 'subTasks', 'subTasks.createdBy', 'subTasks.assignedTo'])
+        $tasksDto = GetProjectTasksDto::fromRequest($request);
+
+        $query = GetProjectTasksQuery::handle($project->tasks()->getQuery(), $tasksDto);
+
+        $tasks = $query
             ->get()
             ->groupBy('status')
             ->map(fn ($group) => $group->toResourceCollection());
