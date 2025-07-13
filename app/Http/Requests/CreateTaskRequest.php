@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
-use App\Enum\TaskStatus;
+use App\Enum\TaskPoints;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-final class UpdateTaskStatusRequest extends FormRequest
+final class CreateTaskRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,13 @@ final class UpdateTaskStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => ['required', Rule::enum(TaskStatus::class)],
+            'name' => ['required', 'string', 'min:3', 'max:255'],
+            'description' => ['nullable', 'string', 'min:3', 'max:255'],
+            'points' => ['required', Rule::enum(TaskPoints::class)],
+            'tag_ids' => ['nullable', 'array'],
+            'tag_ids.*' => ['integer', 'exists:tags,id'],
+            'parent_id' => ['nullable', 'exists:tasks,id'],
+            'assigned_to_id' => ['nullable', 'exists:users,id'],
         ];
     }
 }

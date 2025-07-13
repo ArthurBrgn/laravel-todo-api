@@ -32,7 +32,7 @@ test('assign task successfully', function () {
     ]);
 });
 
-test('user auauthorized', function () {
+test('user unauthorized', function () {
     $project = Project::factory()->create();
 
     $task = Task::factory()

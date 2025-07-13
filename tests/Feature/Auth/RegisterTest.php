@@ -3,23 +3,29 @@
 declare(strict_types=1);
 
 use App\Models\User;
+use Illuminate\Testing\Fluent\AssertableJson;
 
 test('register successfully', function () {
-    $response = $this->postJson('/api/register', [
+    $payload = [
         'name' => 'Test User',
         'email' => 'test@test.com',
         'password' => 'password',
         'password_confirmation' => 'password',
-    ]);
+    ];
+
+    $response = $this->postJson(route('auth.register'), $payload);
 
     $response->assertCreated()
         ->assertJsonIsObject()
-        ->assertJsonStructure(['token'])
-        ->assertJsonPath('user.email', 'test@test.com');
+        ->assertJson(
+            fn (AssertableJson $json) => $json->hasAll(['token', 'user'])
+                ->where('user.name', $payload['name'])
+                ->where('user.email', $payload['email'])
+        );
 });
 
 test('register with errors', function () {
-    $response = $this->postJson('/api/register', [
+    $response = $this->postJson(route('auth.register'), [
         'name' => 'Te',
         'email' => 'test',
         'password' => 'password',
@@ -32,7 +38,7 @@ test('register with errors', function () {
 test('user already exists', function () {
     User::factory()->create(['email' => 'test@test.com']);
 
-    $response = $this->postJson('/api/register', [
+    $response = $this->postJson(route('auth.register'), [
         'name' => 'Test user',
         'email' => 'test@test.com',
         'password' => 'password',

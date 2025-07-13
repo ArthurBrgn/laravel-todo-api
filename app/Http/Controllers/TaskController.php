@@ -4,14 +4,25 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\AssignTaskAction;
+use App\Actions\CreateTaskAction;
+use App\Actions\UnassignTaskAction;
+use App\Dtos\CreateTaskDto;
+use App\Dtos\GetProjectTasksDto;
 use App\Http\Requests\AssignTaskRequest;
+use App\Http\Requests\CreateTaskRequest;
+use App\Http\Requests\GetProjectTasksRequest;
 use App\Http\Requests\SearchTaskRequest;
 use App\Http\Requests\UpdateTaskStatusRequest;
 use App\Http\Resources\TaskResource;
+use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
+use App\Queries\GetProjectTasksQuery;
 use App\Queries\SearchTaskQuery;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
@@ -19,7 +30,7 @@ final class TaskController extends Controller
 {
     /*************  ✨ Windsurf Command ⭐  *************/
     /*******  65369dc6-8500-47df-8c29-39534fbc089c  *******/
-    public function index(): ResourceCollection
+    public function currentUserTasks(): ResourceCollection
     {
         $tasks = Auth::user()->assignedTasks()
             ->with(['createdBy', 'assignedTo', 'tags'])
@@ -27,6 +38,20 @@ final class TaskController extends Controller
             ->simplePaginate();
 
         return $tasks->toResourceCollection();
+    }
+
+    public function projectTasks(Project $project, GetProjectTasksRequest $request): JsonResponse
+    {
+        $tasksDto = GetProjectTasksDto::fromRequest($request);
+
+        $query = GetProjectTasksQuery::handle($project->tasks()->getQuery(), $tasksDto);
+
+        $tasks = $query
+            ->get()
+            ->groupBy('status')
+            ->map(fn ($group) => $group->toResourceCollection());
+
+        return response()->json($tasks);
     }
 
     /**
@@ -39,6 +64,15 @@ final class TaskController extends Controller
         return TaskResource::collection($tasks);
     }
 
+    public function store(Project $project, CreateTaskRequest $request, CreateTaskAction $createTask): JsonResponse
+    {
+        $dto = CreateTaskDto::fromRequest($request);
+
+        $task = $createTask->handle($project, Auth::user(), $dto);
+
+        return response()->json(new TaskResource($task), Response::HTTP_CREATED);
+    }
+
     public function updateStatus(Task $task, UpdateTaskStatusRequest $request): TaskResource
     {
         Gate::authorize('interactWith', $task);
@@ -48,30 +82,20 @@ final class TaskController extends Controller
         return new TaskResource($task);
     }
 
-    public function assign(Task $task, AssignTaskRequest $request): TaskResource
+    public function assign(Task $task, AssignTaskRequest $request, AssignTaskAction $assignTask): TaskResource
     {
         Gate::authorize('interactWith', $task);
 
-        $user = User::find($request->validated('user_id'));
-
-        $task->assignedTo()->associate($user);
-
-        $task->save();
-
-        $task->refresh();
+        $task = $assignTask->handle($task, User::find($request->validated('user_id')));
 
         return new TaskResource($task);
     }
 
-    public function unassign(Task $task): TaskResource
+    public function unassign(Task $task, UnassignTaskAction $unassignTask): TaskResource
     {
         Gate::authorize('interactWith', $task);
 
-        $task->assignedTo()->dissociate();
-
-        $task->save();
-
-        $task->refresh();
+        $task = $unassignTask->handle($task);
 
         return new TaskResource($task);
     }

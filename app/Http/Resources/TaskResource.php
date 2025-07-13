@@ -21,6 +21,7 @@ final class TaskResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'status' => $this->status,
+            'points' => $this->points,
             'created_by' => new UserResource($this->whenLoaded('createdBy')),
             'assigned_to' => new UserResource($this->whenLoaded('assignedTo')),
             'sub_tasks' => TaskResource::collection($this->whenLoaded('subTasks')),

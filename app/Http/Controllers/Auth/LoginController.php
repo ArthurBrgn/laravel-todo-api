@@ -9,17 +9,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 final class LoginController extends Controller
 {
     public function __invoke(LoginRequest $request): JsonResponse
     {
-        if (! Auth::attempt($request->safe()->only(['email', 'password']))) {
+        $user = User::query()->where('email', $request->validated('email'))->first();
+
+        if (! $user || ! Hash::check($request->validated('password'), $user->password)) {
             throw new InvalidCredentialsException;
         }
-
-        $user = User::query()->where('email', $request->validated('email'))->first();
 
         $token = $user->createToken('api-token');
 

@@ -25,7 +25,7 @@ final class GetProjectTasksRequest extends FormRequest
     {
         return [
             'user_ids' => ['sometimes', 'nullable', 'array', 'distinct:strict', 'exists:users,id'],
-            'tag_ids' => ['sometimes', 'nullable', 'array', 'distinct:strict', 'exists:users,id'],
+            'tag_ids' => ['sometimes', 'nullable', 'array', 'distinct:strict', 'exists:tags,id'],
         ];
     }
 }

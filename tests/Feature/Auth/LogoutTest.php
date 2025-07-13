@@ -5,7 +5,7 @@ declare(strict_types=1);
 test('logout successfully', function () {
     $user = $this->authenticateUser();
 
-    $response = $this->postJson('/api/logout');
+    $response = $this->postJson(route('auth.logout'));
 
     $response->assertNoContent();
 
