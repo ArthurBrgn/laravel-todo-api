@@ -13,7 +13,7 @@ beforeEach(function () {
 test('add user to project successfully', function () {
     $project = Project::factory()->create();
 
-    $response = $this->postJson("/api/projects/{$project->id}/users/{$this->user->id}/associate");
+    $response = $this->postJson(route('projects.user.associate', [$project, $this->user]));
 
     $response->assertOk()
         ->assertJsonIsObject()
@@ -30,7 +30,7 @@ test('add user to project successfully', function () {
 test('user already present', function () {
     $project = Project::factory()->hasAttached($this->user)->create();
 
-    $response = $this->postJson("/api/projects/{$project->id}/users/{$this->user->id}/associate");
+    $response = $this->postJson(route('projects.user.associate', [$project, $this->user]));
 
     $response->assertStatus(Response::HTTP_CONFLICT)
         ->assertExactJson(
@@ -47,7 +47,7 @@ test('project doesn\'t exists', function () {
 test('user doesn\'t exists', function () {
     $project = Project::factory()->create();
 
-    $response = $this->postJson("/api/projects/{$project->id}/users/999/associate");
+    $response = $this->postJson(route('projects.user.associate', [$project, 999]));
 
     $response->assertNotFound();
 });

@@ -25,7 +25,7 @@ test('update task status successfully', function () {
 
             $newStatus = $newStatus->value;
 
-            $response = $this->patchJson("/api/tasks/{$task->id}/status", [
+            $response = $this->patchJson(route('task.status.update', $task), [
                 'status' => $newStatus,
             ]);
 
@@ -46,7 +46,7 @@ test('user authorized', function () {
         ->for($this->user, 'createdBy')
         ->create(['status' => TaskStatus::TODO]);
 
-    $response = $this->patchJson("/api/tasks/{$task->id}/status", [
+    $response = $this->patchJson(route('task.status.update', $task), [
         'status' => TaskStatus::DOING->value,
     ]);
 
@@ -61,7 +61,7 @@ test('status does not exists', function () {
         ->for($this->user, 'createdBy')
         ->create();
 
-    $response = $this->patchJson("/api/tasks/{$task->id}/status", [
+    $response = $this->patchJson(route('task.status.update', $task), [
         'status' => 'test',
     ]);
 
@@ -87,7 +87,7 @@ test('cannot transition to new status', function () {
                 ->for($this->user, 'createdBy')
                 ->create(['status' => $case]);
 
-            $response = $this->patchJson("/api/tasks/{$task->id}/status", [
+            $response = $this->patchJson(route('task.status.update', $task), [
                 'status' => $newStatus->value,
             ]);
 

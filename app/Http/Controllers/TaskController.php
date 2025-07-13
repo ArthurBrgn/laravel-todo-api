@@ -42,6 +42,8 @@ final class TaskController extends Controller
 
     public function projectTasks(Project $project, GetProjectTasksRequest $request): JsonResponse
     {
+        Gate::authorize('interactWith', $project);
+
         $tasksDto = GetProjectTasksDto::fromRequest($request);
 
         $query = GetProjectTasksQuery::handle($project->tasks()->getQuery(), $tasksDto);
@@ -66,6 +68,8 @@ final class TaskController extends Controller
 
     public function store(Project $project, CreateTaskRequest $request, CreateTaskAction $createTask): JsonResponse
     {
+        Gate::authorize('interactWith', $project);
+
         $dto = CreateTaskDto::fromRequest($request);
 
         $task = $createTask->handle($project, Auth::user(), $dto);
@@ -75,7 +79,7 @@ final class TaskController extends Controller
 
     public function updateStatus(Task $task, UpdateTaskStatusRequest $request): TaskResource
     {
-        Gate::authorize('interactWith', $task);
+        Gate::authorize('interactWith', $task->project);
 
         $task->update(['status' => $request->validated('status')]);
 
@@ -84,7 +88,7 @@ final class TaskController extends Controller
 
     public function assign(Task $task, AssignTaskRequest $request, AssignTaskAction $assignTask): TaskResource
     {
-        Gate::authorize('interactWith', $task);
+        Gate::authorize('interactWith', $task->project);
 
         $task = $assignTask->handle($task, User::find($request->validated('user_id')));
 
@@ -93,7 +97,7 @@ final class TaskController extends Controller
 
     public function unassign(Task $task, UnassignTaskAction $unassignTask): TaskResource
     {
-        Gate::authorize('interactWith', $task);
+        Gate::authorize('interactWith', $task->project);
 
         $task = $unassignTask->handle($task);
 

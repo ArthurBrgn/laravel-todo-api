@@ -11,7 +11,7 @@ use Illuminate\Testing\Fluent\AssertableJson;
 beforeEach(function () {
     $this->user = $this->authenticateUser();
 
-    $this->project = Project::factory()->create();
+    $this->project = Project::factory()->hasAttached($this->user)->create();
 });
 
 it('creates a task successfully with full payload', function () {

@@ -14,7 +14,7 @@ test('delete tag successfully', function () {
         ->for(Project::factory())
         ->create();
 
-    $response = $this->deleteJson("/api/tags/{$tag->id}");
+    $response = $this->deleteJson(route('tags.destroy', $tag));
 
     $response->assertNoContent();
 

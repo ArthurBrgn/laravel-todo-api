@@ -17,7 +17,7 @@ test('assign task successfully', function () {
         ->for($this->user, 'createdBy')
         ->create();
 
-    $response = $this->postJson("/api/tasks/{$task->id}/assign", [
+    $response = $this->postJson(route('task.assign', $task), [
         'user_id' => $this->user->id,
     ]);
 
@@ -40,7 +40,7 @@ test('user unauthorized', function () {
         ->for($this->user, 'createdBy')
         ->create();
 
-    $response = $this->postJson("/api/tasks/{$task->id}/assign", [
+    $response = $this->postJson(route('task.assign', $task), [
         'user_id' => $this->user->id,
     ]);
 
@@ -48,7 +48,7 @@ test('user unauthorized', function () {
 });
 
 test('task not found', function () {
-    $response = $this->postJson('/api/tasks/999/assign', [
+    $response = $this->postJson(route('task.assign', 999), [
         'user_id' => 999,
     ]);
 
@@ -63,7 +63,7 @@ test('user not found', function () {
         ->for($this->user, 'createdBy')
         ->create();
 
-    $response = $this->postJson("/api/tasks/{$task->id}/assign", [
+    $response = $this->postJson(route('task.assign', $task), [
         'user_id' => 999,
     ]);
 

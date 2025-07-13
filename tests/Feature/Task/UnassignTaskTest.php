@@ -18,7 +18,7 @@ test('unassign task successfully', function () {
         ->for($this->user, 'assignedTo')
         ->create();
 
-    $response = $this->postJson("/api/tasks/{$task->id}/unassign");
+    $response = $this->postJson(route('task.unassign', $task));
 
     $response->assertOk()
         ->assertJsonIsObject()
@@ -40,13 +40,13 @@ test('user not in project', function () {
         ->for($this->user, 'assignedTo')
         ->create();
 
-    $response = $this->postJson("/api/tasks/{$task->id}/unassign");
+    $response = $this->postJson(route('task.unassign', $task));
 
     $response->assertForbidden();
 });
 
 test('task not found', function () {
-    $response = $this->postJson('/api/tasks/999/unassign');
+    $response = $this->postJson(route('task.unassign', 999));
 
     $response->assertNotFound();
 });

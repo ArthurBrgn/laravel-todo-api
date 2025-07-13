@@ -11,7 +11,7 @@ beforeEach(function () {
 test('create tag successfully', function () {
     $project = Project::factory()->create();
 
-    $response = $this->postJson("/api/projects/{$project->id}/tags", [
+    $response = $this->postJson(route('projects.tags.store', $project), [
         'name' => 'New Tag',
     ]);
 
@@ -25,7 +25,7 @@ test('create tag with existing name fails', function () {
     $project = Project::factory()->create();
     $project->tags()->create(['name' => 'Existing Tag']);
 
-    $response = $this->postJson("/api/projects/{$project->id}/tags", [
+    $response = $this->postJson(route('projects.tags.store', $project), [
         'name' => 'Existing Tag',
     ]);
 
@@ -36,7 +36,7 @@ test('create tag with existing name fails', function () {
 test('create tag with short name fails', function () {
     $project = Project::factory()->create();
 
-    $response = $this->postJson("/api/projects/{$project->id}/tags", [
+    $response = $this->postJson(route('projects.tags.store', $project), [
         'name' => 'ab',
     ]);
 
@@ -45,7 +45,7 @@ test('create tag with short name fails', function () {
 });
 
 test('project not found when creating tag', function () {
-    $response = $this->postJson('/api/projects/999/tags', [
+    $response = $this->postJson(route('projects.tags.store', '999'), [
         'name' => 'New Tag',
     ]);
 

@@ -14,7 +14,7 @@ test('update tag successfully', function () {
         ->for(Project::factory())
         ->create(['name' => 'Old Tag']);
 
-    $response = $this->patchJson("/api/tags/{$tag->id}", [
+    $response = $this->patchJson(route('tags.update', $tag), [
         'name' => 'Updated Tag',
     ]);
 
@@ -35,7 +35,7 @@ test('update tag with existing name fails', function () {
         ->for($project)
         ->create(['name' => 'Tag Two']);
 
-    $response = $this->patchJson("/api/tags/{$tag1->id}", [
+    $response = $this->patchJson(route('tags.update', $tag1), [
         'name' => 'Tag Two',
     ]);
 
@@ -44,7 +44,7 @@ test('update tag with existing name fails', function () {
 });
 
 test('tag not found when updating', function () {
-    $response = $this->patchJson('/api/tags/999', [
+    $response = $this->patchJson(route('tags.update', 999), [
         'name' => 'Updated Tag',
     ]);
 

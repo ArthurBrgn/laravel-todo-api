@@ -12,7 +12,7 @@ beforeEach(function () {
 test('get project list', function () {
     Project::factory(20)->create();
 
-    $response = $this->getJson('/api/projects');
+    $response = $this->getJson(route('projects.index'));
 
     $response
         ->assertOk()

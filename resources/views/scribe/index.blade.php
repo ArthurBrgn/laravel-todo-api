@@ -812,7 +812,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --data "{
     \"name\": \"b\",
     \"description\": \"Et animi quos velit et fugiat.\",
-    \"points\": 1,
+    \"points\": 8,
     \"tag_ids\": [
         16
     ]
@@ -834,7 +834,7 @@ const headers = {
 let body = {
     "name": "b",
     "description": "Et animi quos velit et fugiat.",
-    "points": 1,
+    "points": 8,
     "tag_ids": [
         16
     ]
@@ -971,10 +971,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="points"                data-endpoint="POSTapi-projects--project_id--tasks"
-               value="1"
+               value="8"
                data-component="body">
     <br>
-<p>Example: <code>1</code></p>
+<p>Example: <code>8</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>1</code></li> <li><code>3</code></li> <li><code>5</code></li> <li><code>8</code></li> <li><code>13</code></li> <li><code>21</code></li></ul>
         </div>
@@ -2245,7 +2245,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"status\": \"DOING\"
+    \"status\": \"TODO\"
 }"
 </code></pre></div>
 
@@ -2262,7 +2262,7 @@ const headers = {
 };
 
 let body = {
-    "status": "DOING"
+    "status": "TODO"
 };
 
 fetch(url, {
@@ -2374,10 +2374,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="PATCHapi-tasks--task_id--status"
-               value="DOING"
+               value="TODO"
                data-component="body">
     <br>
-<p>Example: <code>DOING</code></p>
+<p>Example: <code>TODO</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>TODO</code></li> <li><code>DOING</code></li> <li><code>REVIEW</code></li> <li><code>BLOCKED</code></li> <li><code>DONE</code></li></ul>
         </div>

@@ -19,7 +19,7 @@ test('get current user tasks', function () {
         ->for($this->user, 'assignedTo')
         ->create();
 
-    $response = $this->getJson('/api/tasks');
+    $response = $this->getJson(route('tasks.user.current'));
 
     $response
         ->assertOk()

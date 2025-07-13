@@ -11,10 +11,10 @@ beforeEach(function () {
 
 test('get tag list', function () {
     $project = Project::factory()
-        ->hasTags(30) // Create 15 tags for the project
+        ->hasTags(30)
         ->create();
 
-    $response = $this->getJson("/api/projects/{$project->id}/tags");
+    $response = $this->getJson(route('projects.tags.index', $project));
 
     $response
         ->assertOk()

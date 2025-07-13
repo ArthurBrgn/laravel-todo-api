@@ -11,7 +11,7 @@ beforeEach(function () {
 });
 
 test('get tasks for project', function () {
-    $project = Project::factory()->create();
+    $project = Project::factory()->hasAttached($this->user)->create();
 
     $taskStatuses = TaskStatus::cases();
 
@@ -22,7 +22,7 @@ test('get tasks for project', function () {
             ->create(['status' => $status]);
     }
 
-    $response = $this->getJson("/api/projects/{$project->id}/tasks");
+    $response = $this->getJson(route('projects.tasks', $project));
 
     $this->assertAuthenticatedAs($this->user);
 
@@ -48,14 +48,22 @@ test('get tasks for project', function () {
 });
 
 test('task list is empty', function () {
-    $project = Project::factory()->create();
+    $project = Project::factory()->hasAttached($this->user)->create();
 
-    $response = $this->getJson("/api/projects/{$project->id}/tasks");
+    $response = $this->getJson(route('projects.tasks', $project));
 
     $response
         ->assertOk()
         ->assertJsonIsArray()
         ->assertJsonCount(0);
+});
+
+test('user not associated with project', function () {
+    $project = Project::factory()->create();
+
+    $response = $this->getJson(route('projects.tasks', $project));
+
+    $response->assertForbidden();
 });
 
 test('project not found', function () {
