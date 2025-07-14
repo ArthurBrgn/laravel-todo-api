@@ -133,7 +133,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: July 13, 2025</li>
+        <li>Last updated: July 14, 2025</li>
     </ul>
 </div>
 
@@ -812,7 +812,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --data "{
     \"name\": \"b\",
     \"description\": \"Et animi quos velit et fugiat.\",
-    \"points\": 8,
+    \"points\": 13,
     \"tag_ids\": [
         16
     ]
@@ -834,7 +834,7 @@ const headers = {
 let body = {
     "name": "b",
     "description": "Et animi quos velit et fugiat.",
-    "points": 8,
+    "points": 13,
     "tag_ids": [
         16
     ]
@@ -971,10 +971,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="points"                data-endpoint="POSTapi-projects--project_id--tasks"
-               value="8"
+               value="13"
                data-component="body">
     <br>
-<p>Example: <code>8</code></p>
+<p>Example: <code>13</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>1</code></li> <li><code>3</code></li> <li><code>5</code></li> <li><code>8</code></li> <li><code>13</code></li> <li><code>21</code></li></ul>
         </div>

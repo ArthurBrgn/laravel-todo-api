@@ -46,5 +46,5 @@ test('search term too short', function () {
 
 test('project not found', function () {
     $this->getJson(route('tags.search', [999, 'search' => 'Test']))
-		->assertNotFound();
+        ->assertNotFound();
 });
