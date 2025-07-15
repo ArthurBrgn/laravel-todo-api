@@ -40,7 +40,7 @@ test('create a project successfully', function () {
 test('fail name is missing', function () {
     $this->postJson(route('projects.store'))
         ->assertUnprocessable()
-        ->assertInvalid(['name']);
+        ->assertOnlyInvalid(['name']);
 });
 
 test('fail user_ids duplicate', function () {
@@ -49,7 +49,7 @@ test('fail user_ids duplicate', function () {
         'user_ids' => [1, 1],
     ])
         ->assertUnprocessable()
-        ->assertInvalid(['user_ids.0', 'user_ids.1']);
+        ->assertOnlyInvalid(['user_ids.0', 'user_ids.1']);
 });
 
 test('fail user_id not exists', function () {
@@ -58,5 +58,5 @@ test('fail user_id not exists', function () {
         'user_ids' => [999],
     ])
         ->assertUnprocessable()
-        ->assertInvalid(['user_ids.0']);
+        ->assertOnlyInvalid(['user_ids.0']);
 });

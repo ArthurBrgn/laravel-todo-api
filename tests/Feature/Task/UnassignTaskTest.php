@@ -43,6 +43,12 @@ test('user not in project', function () {
     $response = $this->postJson(route('task.unassign', $task));
 
     $response->assertForbidden();
+
+	$this->assertDatabaseHas('tasks', [
+        'id' => $task->id,
+        'project_id' => $project->id,
+        'assigned_to_id' => $this->user->id,
+    ]);
 });
 
 test('task not found', function () {

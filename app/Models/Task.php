@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enum\TaskPoints;
 use App\Enum\TaskStatus;
 use App\Exceptions\InvalidTaskStatusTransitionException;
 use Illuminate\Database\Eloquent\Attributes\Scope;
@@ -29,6 +30,19 @@ final class Task extends Model
         'number' => null,
     ];
 
+	/**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'status' => TaskStatus::class,
+            'points' => TaskPoints::class
+        ];
+    }
+
     /**
      * Generate task number
      */
@@ -45,18 +59,6 @@ final class Task extends Model
                 }
             }
         });
-    }
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'status' => TaskStatus::class,
-        ];
     }
 
     #[Scope]

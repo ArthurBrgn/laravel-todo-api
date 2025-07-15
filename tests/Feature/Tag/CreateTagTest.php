@@ -11,14 +11,19 @@ beforeEach(function () {
 test('create tag successfully', function () {
     $project = Project::factory()->create();
 
-    $response = $this->postJson(route('projects.tags.store', $project), [
-        'name' => 'New Tag',
-    ]);
+	$payload = ['name' => 'New Tag'];
+
+    $response = $this->postJson(route('projects.tags.store', $project), $payload);
 
     $response->assertCreated()
+		->assertJsonIsObject()
         ->assertJson([
-            'name' => 'New Tag',
+            'name' => $payload['name'],
         ]);
+
+	$this->assertDatabaseHas('tags', [
+		'name' => $payload['name'],
+	]);
 });
 
 test('create tag with existing name fails', function () {
@@ -30,7 +35,8 @@ test('create tag with existing name fails', function () {
     ]);
 
     $response->assertUnprocessable()
-        ->assertInvalid(['name']);
+		->assertJsonIsObject()
+        ->assertOnlyInvalid(['name']);
 });
 
 test('create tag with short name fails', function () {
@@ -41,7 +47,8 @@ test('create tag with short name fails', function () {
     ]);
 
     $response->assertUnprocessable()
-        ->assertInvalid(['name']);
+		->assertJsonIsObject()
+        ->assertOnlyInvalid(['name']);
 });
 
 test('project not found when creating tag', function () {

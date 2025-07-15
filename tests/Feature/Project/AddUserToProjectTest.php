@@ -42,6 +42,8 @@ test('project doesn\'t exists', function () {
     $response = $this->postJson("/api/projects/999/users/{$this->user->id}/associate");
 
     $response->assertNotFound();
+
+	$this->assertDatabaseEmpty('project_user');
 });
 
 test('user doesn\'t exists', function () {
@@ -50,4 +52,6 @@ test('user doesn\'t exists', function () {
     $response = $this->postJson(route('projects.user.associate', [$project, 999]));
 
     $response->assertNotFound();
+
+	$this->assertDatabaseEmpty('project_user');
 });

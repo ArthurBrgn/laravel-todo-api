@@ -31,7 +31,7 @@ test('search term not present', function () {
 
     $response
         ->assertUnprocessable()
-        ->assertInvalid(['search']);
+        ->assertOnlyInvalid(['search']);
 });
 
 test('search term too short', function () {
@@ -41,7 +41,7 @@ test('search term too short', function () {
 
     $response
         ->assertUnprocessable()
-        ->assertInvalid(['search']);
+        ->assertOnlyInvalid(['search']);
 });
 
 test('project not found', function () {

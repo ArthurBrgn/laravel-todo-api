@@ -20,3 +20,9 @@ test('delete tag successfully', function () {
 
     $this->assertSoftDeleted($tag);
 });
+
+test('delete tag that does not exist', function () {
+	$response = $this->deleteJson(route('tags.destroy', 1));
+
+	$response->assertNotFound();
+});

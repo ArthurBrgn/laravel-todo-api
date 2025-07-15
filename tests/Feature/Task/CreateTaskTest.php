@@ -40,14 +40,14 @@ test('fail name is missing', function () {
     $this->postJson(route('tasks.store', $this->project), [
         // 'name' => 'missing',
         'points' => TaskPoints::THREE->value,
-    ])->assertInvalid(['name']);
+    ])->assertOnlyInvalid(['name']);
 });
 
 test('fail name too short', function () {
     $this->postJson(route('tasks.store', $this->project), [
         'name' => 'ab',
         'points' => TaskPoints::ONE->value,
-    ])->assertInvalid(['name']);
+    ])->assertOnlyInvalid(['name']);
 });
 
 test('fails description too short', function () {
@@ -55,14 +55,14 @@ test('fails description too short', function () {
         'name' => 'Valid name',
         'description' => 'ab',
         'points' => TaskPoints::ONE->value,
-    ])->assertInvalid(['description']);
+    ])->assertOnlyInvalid(['description']);
 });
 
 test('fails points invalid', function () {
     $this->postJson(route('tasks.store', $this->project), [
         'name' => 'Valid Task',
         'points' => 'invalid_enum',
-    ])->assertInvalid(['points']);
+    ])->assertOnlyInvalid(['points']);
 });
 
 test('fail tag id not exists', function () {
@@ -70,7 +70,7 @@ test('fail tag id not exists', function () {
         'name' => 'Valid Task',
         'points' => TaskPoints::ONE->value,
         'tag_ids' => [9999],
-    ])->assertInvalid(['tag_ids.0']);
+    ])->assertOnlyInvalid(['tag_ids.0']);
 });
 
 test('fail assigned_to_id does not exist', function () {
@@ -78,7 +78,7 @@ test('fail assigned_to_id does not exist', function () {
         'name' => 'Valid Task',
         'points' => TaskPoints::ONE->value,
         'assigned_to_id' => 9999,
-    ])->assertInvalid(['assigned_to_id']);
+    ])->assertOnlyInvalid(['assigned_to_id']);
 });
 
 test('fail parent_id does not exist', function () {
@@ -86,5 +86,5 @@ test('fail parent_id does not exist', function () {
         'name' => 'Valid Task',
         'points' => TaskPoints::ONE->value,
         'parent_id' => 9999,
-    ])->assertInvalid(['parent_id']);
+    ])->assertOnlyInvalid(['parent_id']);
 });

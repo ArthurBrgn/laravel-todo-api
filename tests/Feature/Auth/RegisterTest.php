@@ -22,6 +22,11 @@ test('register successfully', function () {
                 ->where('user.name', $payload['name'])
                 ->where('user.email', $payload['email'])
         );
+
+	$this->assertDatabaseHas('users', [
+		'name' => $payload['name'],
+		'email' => $payload['email'],
+	]);
 });
 
 test('register with errors', function () {
@@ -32,7 +37,8 @@ test('register with errors', function () {
     ]);
 
     $response->assertUnprocessable()
-        ->assertInvalid(['name', 'email', 'password']);
+		->assertJsonIsObject()
+        ->assertOnlyInvalid(['name', 'email', 'password']);
 });
 
 test('user already exists', function () {
@@ -46,5 +52,5 @@ test('user already exists', function () {
     ]);
 
     $response->assertUnprocessable()
-        ->assertInvalid(['email']);
+        ->assertOnlyInvalid(['email']);
 });

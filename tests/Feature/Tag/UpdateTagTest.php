@@ -40,7 +40,7 @@ test('update tag with existing name fails', function () {
     ]);
 
     $response->assertUnprocessable()
-        ->assertInvalid(['name']);
+        ->assertOnlyInvalid(['name']);
 });
 
 test('tag not found when updating', function () {
