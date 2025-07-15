@@ -80,6 +80,9 @@
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-projects">
                                 <a href="#endpoints-GETapi-projects">GET api/projects</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-POSTapi-projects">
+                                <a href="#endpoints-POSTapi-projects">POST api/projects</a>
+                            </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-projects--project_id--tasks">
                                 <a href="#endpoints-GETapi-projects--project_id--tasks">GET api/projects/{project_id}/tasks</a>
                             </li>
@@ -133,7 +136,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: July 14, 2025</li>
+        <li>Last updated: July 15, 2025</li>
     </ul>
 </div>
 
@@ -617,6 +620,181 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
+                    <h2 id="endpoints-POSTapi-projects">POST api/projects</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+
+
+<span id="example-requests-POSTapi-projects">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost/api/projects" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"name\": \"b\",
+    \"description\": \"Et animi quos velit et fugiat.\",
+    \"user_ids\": [
+        16
+    ]
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/projects"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "name": "b",
+    "description": "Et animi quos velit et fugiat.",
+    "user_ids": [
+        16
+    ]
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-projects">
+</span>
+<span id="execution-results-POSTapi-projects" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-projects"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-projects"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-projects" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-projects">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-projects" data-method="POST"
+      data-path="api/projects"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-projects', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-projects"
+                    onclick="tryItOut('POSTapi-projects');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-projects"
+                    onclick="cancelTryOut('POSTapi-projects');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-projects"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/projects</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="POSTapi-projects"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-projects"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-projects"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="name"                data-endpoint="POSTapi-projects"
+               value="b"
+               data-component="body">
+    <br>
+<p>Le texte du champ value doit contenir au moins 3 caractères. Le texte de value ne peut contenir plus de 255 caractères. Example: <code>b</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>description</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+                              name="description"                data-endpoint="POSTapi-projects"
+               value="Et animi quos velit et fugiat."
+               data-component="body">
+    <br>
+<p>Le texte du champ value doit contenir au moins 3 caractères. Le texte de value ne peut contenir plus de 255 caractères. Example: <code>Et animi quos velit et fugiat.</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>user_ids</code></b>&nbsp;&nbsp;
+<small>integer[]</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="user_ids[0]"                data-endpoint="POSTapi-projects"
+               data-component="body">
+        <input type="number" style="display: none"
+               name="user_ids[1]"                data-endpoint="POSTapi-projects"
+               data-component="body">
+    <br>
+<p>The <code>id</code> of an existing record in the users table.</p>
+        </div>
+        </form>
+
                     <h2 id="endpoints-GETapi-projects--project_id--tasks">GET api/projects/{project_id}/tasks</h2>
 
 <p>
@@ -635,6 +813,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
+    --data "{
+    \"user_ids\": [
+        16
+    ],
+    \"tag_ids\": [
+        16
+    ]
+}"
 </code></pre></div>
 
 
@@ -649,9 +835,19 @@ const headers = {
     "Accept": "application/json",
 };
 
+let body = {
+    "user_ids": [
+        16
+    ],
+    "tag_ids": [
+        16
+    ]
+};
+
 fetch(url, {
     method: "GET",
     headers,
+    body: JSON.stringify(body),
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -769,22 +965,26 @@ You can check the Dev Tools console for debugging information.</code></pre>
                             <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>user_ids</code></b>&nbsp;&nbsp;
-<small>object</small>&nbsp;
+<small>integer[]</small>&nbsp;
 <i>optional</i> &nbsp;
-                <input type="text" style="display: none"
-                              name="user_ids"                data-endpoint="GETapi-projects--project_id--tasks"
-               value=""
+                <input type="number" style="display: none"
+               step="any"               name="user_ids[0]"                data-endpoint="GETapi-projects--project_id--tasks"
+               data-component="body">
+        <input type="number" style="display: none"
+               name="user_ids[1]"                data-endpoint="GETapi-projects--project_id--tasks"
                data-component="body">
     <br>
 <p>The <code>id</code> of an existing record in the users table.</p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>tag_ids</code></b>&nbsp;&nbsp;
-<small>object</small>&nbsp;
+<small>integer[]</small>&nbsp;
 <i>optional</i> &nbsp;
-                <input type="text" style="display: none"
-                              name="tag_ids"                data-endpoint="GETapi-projects--project_id--tasks"
-               value=""
+                <input type="number" style="display: none"
+               step="any"               name="tag_ids[0]"                data-endpoint="GETapi-projects--project_id--tasks"
+               data-component="body">
+        <input type="number" style="display: none"
+               name="tag_ids[1]"                data-endpoint="GETapi-projects--project_id--tasks"
                data-component="body">
     <br>
 <p>The <code>id</code> of an existing record in the tags table.</p>
@@ -812,10 +1012,12 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --data "{
     \"name\": \"b\",
     \"description\": \"Et animi quos velit et fugiat.\",
-    \"points\": 13,
+    \"points\": 21,
     \"tag_ids\": [
         16
-    ]
+    ],
+    \"parent_id\": 16,
+    \"assigned_to_id\": 16
 }"
 </code></pre></div>
 
@@ -834,10 +1036,12 @@ const headers = {
 let body = {
     "name": "b",
     "description": "Et animi quos velit et fugiat.",
-    "points": 13,
+    "points": 21,
     "tag_ids": [
         16
-    ]
+    ],
+    "parent_id": 16,
+    "assigned_to_id": 16
 };
 
 fetch(url, {
@@ -971,10 +1175,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="points"                data-endpoint="POSTapi-projects--project_id--tasks"
-               value="13"
+               value="21"
                data-component="body">
     <br>
-<p>Example: <code>13</code></p>
+<p>Example: <code>21</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>1</code></li> <li><code>3</code></li> <li><code>5</code></li> <li><code>8</code></li> <li><code>13</code></li> <li><code>21</code></li></ul>
         </div>
@@ -993,25 +1197,25 @@ Must be one of:
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>parent_id</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
+<small>integer</small>&nbsp;
 <i>optional</i> &nbsp;
-                <input type="text" style="display: none"
-                              name="parent_id"                data-endpoint="POSTapi-projects--project_id--tasks"
-               value=""
+                <input type="number" style="display: none"
+               step="any"               name="parent_id"                data-endpoint="POSTapi-projects--project_id--tasks"
+               value="16"
                data-component="body">
     <br>
-<p>The <code>id</code> of an existing record in the tasks table.</p>
+<p>The <code>id</code> of an existing record in the tasks table. Example: <code>16</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>assigned_to_id</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
+<small>integer</small>&nbsp;
 <i>optional</i> &nbsp;
-                <input type="text" style="display: none"
-                              name="assigned_to_id"                data-endpoint="POSTapi-projects--project_id--tasks"
-               value=""
+                <input type="number" style="display: none"
+               step="any"               name="assigned_to_id"                data-endpoint="POSTapi-projects--project_id--tasks"
+               value="16"
                data-component="body">
     <br>
-<p>The <code>id</code> of an existing record in the users table.</p>
+<p>The <code>id</code> of an existing record in the users table. Example: <code>16</code></p>
         </div>
         </form>
 
@@ -2245,7 +2449,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"status\": \"TODO\"
+    \"status\": \"BLOCKED\"
 }"
 </code></pre></div>
 
@@ -2262,7 +2466,7 @@ const headers = {
 };
 
 let body = {
-    "status": "TODO"
+    "status": "BLOCKED"
 };
 
 fetch(url, {
@@ -2374,10 +2578,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="PATCHapi-tasks--task_id--status"
-               value="TODO"
+               value="BLOCKED"
                data-component="body">
     <br>
-<p>Example: <code>TODO</code></p>
+<p>Example: <code>BLOCKED</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>TODO</code></li> <li><code>DOING</code></li> <li><code>REVIEW</code></li> <li><code>BLOCKED</code></li> <li><code>DONE</code></li></ul>
         </div>

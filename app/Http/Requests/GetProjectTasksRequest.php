@@ -24,8 +24,10 @@ final class GetProjectTasksRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_ids' => ['sometimes', 'nullable', 'array', 'distinct:strict', 'exists:users,id'],
-            'tag_ids' => ['sometimes', 'nullable', 'array', 'distinct:strict', 'exists:tags,id'],
+            'user_ids' => ['sometimes', 'nullable', 'array'],
+            'user_ids.*' => ['integer', 'exists:users,id', 'distinct:strict'],
+            'tag_ids' => ['sometimes', 'nullable', 'array'],
+            'tag_ids.*' => ['integer', 'exists:tags,id', 'distinct:strict'],
         ];
     }
 }

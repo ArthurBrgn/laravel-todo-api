@@ -40,7 +40,7 @@ test('update tag with existing name fails', function () {
     ]);
 
     $response->assertUnprocessable()
-        ->assertJsonValidationErrors(['name']);
+        ->assertInvalid(['name']);
 });
 
 test('tag not found when updating', function () {

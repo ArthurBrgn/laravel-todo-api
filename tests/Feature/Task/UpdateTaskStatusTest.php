@@ -66,7 +66,7 @@ test('status does not exists', function () {
     ]);
 
     $response->assertUnprocessable()
-        ->assertJsonValidationErrors(['status']);
+        ->assertInvalid(['status']);
 });
 
 test('cannot transition to new status', function () {

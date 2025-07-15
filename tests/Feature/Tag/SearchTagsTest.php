@@ -31,7 +31,7 @@ test('search term not present', function () {
 
     $response
         ->assertUnprocessable()
-        ->assertJsonValidationErrors(['search']);
+        ->assertInvalid(['search']);
 });
 
 test('search term too short', function () {
@@ -41,7 +41,7 @@ test('search term too short', function () {
 
     $response
         ->assertUnprocessable()
-        ->assertJsonValidationErrors(['search']);
+        ->assertInvalid(['search']);
 });
 
 test('project not found', function () {

@@ -32,7 +32,7 @@ test('register with errors', function () {
     ]);
 
     $response->assertUnprocessable()
-        ->assertJsonValidationErrors(['name', 'email', 'password']);
+        ->assertInvalid(['name', 'email', 'password']);
 });
 
 test('user already exists', function () {
@@ -46,5 +46,5 @@ test('user already exists', function () {
     ]);
 
     $response->assertUnprocessable()
-        ->assertJsonValidationErrors(['email']);
+        ->assertInvalid(['email']);
 });

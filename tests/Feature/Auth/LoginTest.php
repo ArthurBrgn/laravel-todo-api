@@ -49,5 +49,5 @@ test('user cannot log in with unknown email', function () {
 test('login fails when missing email or password', function () {
     $this->postJson(route('auth.login'))
         ->assertUnprocessable()
-        ->assertJsonValidationErrors(['email', 'password']);
+        ->assertInvalid(['email', 'password']);
 });

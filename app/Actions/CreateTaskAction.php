@@ -19,7 +19,7 @@ final class CreateTaskAction
             'points' => $data->points,
             'parent_id' => $data->parent?->id,
             'assigned_to_id' => $data->assignedTo?->id,
-            'created_by_id' => $createdBy->id, // si tu traces le créateur
+            'created_by_id' => $createdBy->id,
         ]);
 
         if ($data->tags->isNotEmpty()) {

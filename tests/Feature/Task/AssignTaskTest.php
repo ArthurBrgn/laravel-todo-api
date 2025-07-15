@@ -68,5 +68,5 @@ test('user not found', function () {
     ]);
 
     $response->assertUnprocessable()
-        ->assertJsonValidationErrors(['user_id']);
+        ->assertInvalid(['user_id']);
 });

@@ -30,7 +30,7 @@ test('create tag with existing name fails', function () {
     ]);
 
     $response->assertUnprocessable()
-        ->assertJsonValidationErrors(['name']);
+        ->assertInvalid(['name']);
 });
 
 test('create tag with short name fails', function () {
@@ -41,7 +41,7 @@ test('create tag with short name fails', function () {
     ]);
 
     $response->assertUnprocessable()
-        ->assertJsonValidationErrors(['name']);
+        ->assertInvalid(['name']);
 });
 
 test('project not found when creating tag', function () {

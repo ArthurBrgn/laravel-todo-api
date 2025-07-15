@@ -16,6 +16,7 @@ Route::post('/register', RegisterController::class)->name('auth.register');
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('projects')->group(function () {
         Route::get('/', [ProjectController::class, 'index'])->name('projects.index');
+        Route::post('/', [ProjectController::class, 'create'])->name('projects.store');
         Route::get('/{project}/tasks', [TaskController::class, 'projectTasks'])->name('projects.tasks');
         Route::post('/{project}/tasks', [TaskController::class, 'store'])->name('tasks.store');
         Route::get('/{project}/tags/search', [TagController::class, 'search'])->name('tags.search');
