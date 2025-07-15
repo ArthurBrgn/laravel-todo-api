@@ -29,7 +29,7 @@ test('search term not present', function () {
 
     $response
         ->assertUnprocessable()
-		->assertJsonIsObject()
+        ->assertJsonIsObject()
         ->assertOnlyInvalid(['search']);
 });
 
@@ -38,6 +38,6 @@ test('search term too short', function () {
 
     $response
         ->assertUnprocessable()
-		->assertJsonIsObject()
+        ->assertJsonIsObject()
         ->assertOnlyInvalid(['search']);
 });

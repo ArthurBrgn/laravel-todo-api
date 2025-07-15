@@ -30,14 +30,14 @@ test('update task status successfully', function () {
 
             $response->assertOk()
                 ->assertJsonIsObject()
-				->assertJson(fn (AssertableJson $json) =>
-					$json->where('status', $newStatus->value)
-						->where('name', $task->name)
-						->where('number', $task->number)
-						->where('description', $task->description)
-						->where('points', $task->points)
-						->etc()
-				);
+                ->assertJson(
+                    fn (AssertableJson $json) => $json->where('status', $newStatus->value)
+                        ->where('name', $task->name)
+                        ->where('number', $task->number)
+                        ->where('description', $task->description)
+                        ->where('points', $task->points)
+                        ->etc()
+                );
         }
     }
 });
@@ -56,10 +56,10 @@ test('user authorized', function () {
 
     $response->assertForbidden();
 
-	$this->assertDatabaseMissing('tasks', [
-		'id' => $task->id,
-		'status' => TaskStatus::DOING->value
-	]);
+    $this->assertDatabaseMissing('tasks', [
+        'id' => $task->id,
+        'status' => TaskStatus::DOING->value,
+    ]);
 });
 
 test('status does not exists', function () {
@@ -104,11 +104,11 @@ test('cannot transition to new status', function () {
                 ->assertExactJson(
                     ['error' => "Transtion du statut {$task->status->value} à {$newStatus->value} impossible"]
                 );
-		
-			$this->assertDatabaseMissing('tasks', [
-				'id' => $task->id,
-				'status' => $newStatus->value
-			]);
+
+            $this->assertDatabaseMissing('tasks', [
+                'id' => $task->id,
+                'status' => $newStatus->value,
+            ]);
         }
     }
 });

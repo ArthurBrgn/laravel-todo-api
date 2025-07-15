@@ -23,10 +23,10 @@ test('register successfully', function () {
                 ->where('user.email', $payload['email'])
         );
 
-	$this->assertDatabaseHas('users', [
-		'name' => $payload['name'],
-		'email' => $payload['email'],
-	]);
+    $this->assertDatabaseHas('users', [
+        'name' => $payload['name'],
+        'email' => $payload['email'],
+    ]);
 });
 
 test('register with errors', function () {
@@ -37,7 +37,7 @@ test('register with errors', function () {
     ]);
 
     $response->assertUnprocessable()
-		->assertJsonIsObject()
+        ->assertJsonIsObject()
         ->assertOnlyInvalid(['name', 'email', 'password']);
 });
 

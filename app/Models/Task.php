@@ -30,7 +30,7 @@ final class Task extends Model
         'number' => null,
     ];
 
-	/**
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -39,7 +39,7 @@ final class Task extends Model
     {
         return [
             'status' => TaskStatus::class,
-            'points' => TaskPoints::class
+            'points' => TaskPoints::class,
         ];
     }
 

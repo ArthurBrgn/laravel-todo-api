@@ -46,7 +46,7 @@ test('user unauthorized', function () {
 
     $response->assertForbidden();
 
-	$this->assertDatabaseMissing('tasks', [
+    $this->assertDatabaseMissing('tasks', [
         'id' => $task->id,
         'project_id' => $project->id,
         'assigned_to_id' => $this->user->id,
@@ -74,10 +74,10 @@ test('user not found', function () {
     ]);
 
     $response->assertUnprocessable()
-		->assertJsonIsObject()	
+        ->assertJsonIsObject()
         ->assertOnlyInvalid(['user_id']);
 
-	$this->assertDatabaseMissing('tasks', [
+    $this->assertDatabaseMissing('tasks', [
         'id' => $task->id,
         'project_id' => $project->id,
         'assigned_to_id' => $this->user->id,

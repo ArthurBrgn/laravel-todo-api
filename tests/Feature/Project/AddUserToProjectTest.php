@@ -43,7 +43,7 @@ test('project doesn\'t exists', function () {
 
     $response->assertNotFound();
 
-	$this->assertDatabaseEmpty('project_user');
+    $this->assertDatabaseEmpty('project_user');
 });
 
 test('user doesn\'t exists', function () {
@@ -53,5 +53,5 @@ test('user doesn\'t exists', function () {
 
     $response->assertNotFound();
 
-	$this->assertDatabaseEmpty('project_user');
+    $this->assertDatabaseEmpty('project_user');
 });

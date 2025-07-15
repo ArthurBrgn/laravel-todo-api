@@ -44,7 +44,7 @@ test('user not in project', function () {
 
     $response->assertForbidden();
 
-	$this->assertDatabaseHas('tasks', [
+    $this->assertDatabaseHas('tasks', [
         'id' => $task->id,
         'project_id' => $project->id,
         'assigned_to_id' => $this->user->id,

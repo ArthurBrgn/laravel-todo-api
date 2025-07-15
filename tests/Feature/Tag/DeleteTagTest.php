@@ -22,7 +22,7 @@ test('delete tag successfully', function () {
 });
 
 test('delete tag that does not exist', function () {
-	$response = $this->deleteJson(route('tags.destroy', 1));
+    $response = $this->deleteJson(route('tags.destroy', 1));
 
-	$response->assertNotFound();
+    $response->assertNotFound();
 });
