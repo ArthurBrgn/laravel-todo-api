@@ -136,7 +136,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: July 15, 2025</li>
+        <li>Last updated: July 16, 2025</li>
     </ul>
 </div>
 
@@ -2449,7 +2449,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"status\": \"BLOCKED\"
+    \"status\": \"DOING\"
 }"
 </code></pre></div>
 
@@ -2466,7 +2466,7 @@ const headers = {
 };
 
 let body = {
-    "status": "BLOCKED"
+    "status": "DOING"
 };
 
 fetch(url, {
@@ -2578,10 +2578,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="PATCHapi-tasks--task_id--status"
-               value="BLOCKED"
+               value="DOING"
                data-component="body">
     <br>
-<p>Example: <code>BLOCKED</code></p>
+<p>Example: <code>DOING</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>TODO</code></li> <li><code>DOING</code></li> <li><code>REVIEW</code></li> <li><code>BLOCKED</code></li> <li><code>DONE</code></li></ul>
         </div>

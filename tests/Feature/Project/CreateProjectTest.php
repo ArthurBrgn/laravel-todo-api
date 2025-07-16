@@ -11,7 +11,7 @@ use Illuminate\Testing\Fluent\AssertableJson;
 beforeEach(function () {
     $this->user = $this->authenticateUser();
 
-	Notification::fake();
+    Notification::fake();
 });
 
 test('create a project successfully', function () {
@@ -40,8 +40,8 @@ test('create a project successfully', function () {
 
     expect($project->users)->toHaveCount(5);
 
-	Notification::assertSentTo($users, AssociatedToProjectNotification::class);
-	Notification::assertCount(5);
+    Notification::assertSentTo($users, AssociatedToProjectNotification::class);
+    Notification::assertCount(5);
 });
 
 test('fail name is missing', function () {
@@ -49,7 +49,7 @@ test('fail name is missing', function () {
         ->assertUnprocessable()
         ->assertOnlyInvalid(['name']);
 
-	Notification::assertNothingSent();
+    Notification::assertNothingSent();
 });
 
 test('fail user_ids duplicate', function () {
@@ -60,7 +60,7 @@ test('fail user_ids duplicate', function () {
         ->assertUnprocessable()
         ->assertOnlyInvalid(['user_ids.0', 'user_ids.1']);
 
-	Notification::assertNothingSent();
+    Notification::assertNothingSent();
 });
 
 test('fail user_id not exists', function () {
@@ -71,5 +71,5 @@ test('fail user_id not exists', function () {
         ->assertUnprocessable()
         ->assertOnlyInvalid(['user_ids.0']);
 
-	Notification::assertNothingSent();
+    Notification::assertNothingSent();
 });

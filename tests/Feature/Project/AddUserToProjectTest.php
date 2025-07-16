@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 beforeEach(function () {
     $this->user = $this->authenticateUser();
 
-	Notification::fake();
+    Notification::fake();
 });
 
 test('add user to project successfully', function () {
@@ -30,8 +30,8 @@ test('add user to project successfully', function () {
         'user_id' => $this->user->id,
     ]);
 
-	Notification::assertSentTo($this->user, AssociatedToProjectNotification::class);
-	Notification::assertCount(1);
+    Notification::assertSentTo($this->user, AssociatedToProjectNotification::class);
+    Notification::assertCount(1);
 });
 
 test('user already present', function () {
@@ -44,7 +44,7 @@ test('user already present', function () {
             ['error' => 'Cet utilisateur est déjà présent dans le projet.']
         );
 
-	Notification::assertNothingSent();
+    Notification::assertNothingSent();
 });
 
 test('project doesn\'t exists', function () {
@@ -54,7 +54,7 @@ test('project doesn\'t exists', function () {
 
     $this->assertDatabaseEmpty('project_user');
 
-	Notification::assertNothingSent();
+    Notification::assertNothingSent();
 });
 
 test('user doesn\'t exists', function () {
@@ -66,5 +66,5 @@ test('user doesn\'t exists', function () {
 
     $this->assertDatabaseEmpty('project_user');
 
-	Notification::assertNothingSent();
+    Notification::assertNothingSent();
 });

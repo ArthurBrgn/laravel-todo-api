@@ -18,8 +18,8 @@ use App\Http\Resources\TaskResource;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
-use App\Queries\GetProjectTasksQuery;
-use App\Queries\SearchTaskQuery;
+use App\Queries\FilterTasksQuery;
+use App\Queries\SearchTasksQuery;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
@@ -44,11 +44,10 @@ final class TaskController extends Controller
     {
         Gate::authorize('interactWith', $project);
 
-        $tasksDto = GetProjectTasksDto::fromRequest($request);
+        $dto = GetProjectTasksDto::fromRequest($request);
 
-        $query = GetProjectTasksQuery::handle($project->tasks()->getQuery(), $tasksDto);
-
-        $tasks = $query
+        $tasks = $project->tasks()
+            ->tap(new FilterTasksQuery($dto->userIds, $dto->tagIds))
             ->get()
             ->groupBy('status')
             ->map(fn ($group) => $group->toResourceCollection());
@@ -61,7 +60,11 @@ final class TaskController extends Controller
      */
     public function search(SearchTaskRequest $request): ResourceCollection
     {
-        $tasks = SearchTaskQuery::handle(Task::query(), $request->validated('search'))->get();
+        $tasks = Task::query()
+            ->with(['assignedTo'])
+            ->withCount('subTasks')
+            ->tap(new SearchTasksQuery($request->validated('search')))
+            ->get();
 
         return TaskResource::collection($tasks);
     }

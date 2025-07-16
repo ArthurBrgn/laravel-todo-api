@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Notification;
 beforeEach(function () {
     $this->user = $this->authenticateUser();
 
-	Notification::fake();
+    Notification::fake();
 });
 
 test('assign task successfully', function () {
@@ -29,8 +29,9 @@ test('assign task successfully', function () {
         ->assertJsonIsObject()
         ->assertJsonPath('assigned_to.id', $this->user->id);
 
-	Notification::assertSentTo(
-        [$this->user], TaskAssignedNotification::class
+    Notification::assertSentTo(
+        [$this->user],
+        TaskAssignedNotification::class
     );
 
     Notification::assertCount(1);
@@ -62,7 +63,7 @@ test('user unauthorized', function () {
         'assigned_to_id' => $this->user->id,
     ]);
 
-	Notification::assertNothingSent();
+    Notification::assertNothingSent();
 });
 
 test('task not found', function () {
@@ -95,5 +96,5 @@ test('user not found', function () {
         'assigned_to_id' => $this->user->id,
     ]);
 
-	Notification::assertNothingSent();
+    Notification::assertNothingSent();
 });

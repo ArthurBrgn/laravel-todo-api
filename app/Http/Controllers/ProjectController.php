@@ -45,7 +45,7 @@ final class ProjectController extends Controller
 
         $project->users()->attach($user);
 
-		$user->notify(new AssociatedToProjectNotification($project));
+        $user->notify(new AssociatedToProjectNotification($project));
 
         return new UserResource($user);
     }
