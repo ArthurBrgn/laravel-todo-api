@@ -6,6 +6,7 @@ namespace App\Actions;
 
 use App\Models\Task;
 use App\Models\User;
+use App\Notifications\TaskAssignedNotification;
 
 final class AssignTaskAction
 {
@@ -16,6 +17,8 @@ final class AssignTaskAction
         $task->save();
 
         $task->refresh();
+
+        $user->notify(new TaskAssignedNotification($task));
 
         return $task;
     }

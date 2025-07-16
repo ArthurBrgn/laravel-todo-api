@@ -6,6 +6,8 @@ namespace App\Actions;
 
 use App\Dtos\CreateProjectDto;
 use App\Models\Project;
+use App\Notifications\AssociatedToProjectNotification;
+use Illuminate\Support\Facades\Notification;
 
 final class CreateProjectAction
 {
@@ -18,6 +20,8 @@ final class CreateProjectAction
 
         if ($data->users->isNotEmpty()) {
             $project->users()->attach($data->users);
+
+			Notification::send($data->users, new AssociatedToProjectNotification($project));
         }
 
         return $project;

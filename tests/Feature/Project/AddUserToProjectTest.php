@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 use App\Http\Resources\UserResource;
 use App\Models\Project;
+use App\Notifications\AssociatedToProjectNotification;
+use Illuminate\Support\Facades\Notification;
 use Symfony\Component\HttpFoundation\Response;
 
 beforeEach(function () {
     $this->user = $this->authenticateUser();
+
+	Notification::fake();
 });
 
 test('add user to project successfully', function () {
@@ -25,6 +29,9 @@ test('add user to project successfully', function () {
         'project_id' => $project->id,
         'user_id' => $this->user->id,
     ]);
+
+	Notification::assertSentTo($this->user, AssociatedToProjectNotification::class);
+	Notification::assertCount(1);
 });
 
 test('user already present', function () {
@@ -36,6 +43,8 @@ test('user already present', function () {
         ->assertExactJson(
             ['error' => 'Cet utilisateur est déjà présent dans le projet.']
         );
+
+	Notification::assertNothingSent();
 });
 
 test('project doesn\'t exists', function () {
@@ -44,6 +53,8 @@ test('project doesn\'t exists', function () {
     $response->assertNotFound();
 
     $this->assertDatabaseEmpty('project_user');
+
+	Notification::assertNothingSent();
 });
 
 test('user doesn\'t exists', function () {
@@ -54,4 +65,6 @@ test('user doesn\'t exists', function () {
     $response->assertNotFound();
 
     $this->assertDatabaseEmpty('project_user');
+
+	Notification::assertNothingSent();
 });

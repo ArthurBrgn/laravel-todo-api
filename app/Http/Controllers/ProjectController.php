@@ -12,6 +12,7 @@ use App\Http\Resources\ProjectResource;
 use App\Http\Resources\UserResource;
 use App\Models\Project;
 use App\Models\User;
+use App\Notifications\AssociatedToProjectNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
@@ -43,6 +44,8 @@ final class ProjectController extends Controller
         }
 
         $project->users()->attach($user);
+
+		$user->notify(new AssociatedToProjectNotification($project));
 
         return new UserResource($user);
     }

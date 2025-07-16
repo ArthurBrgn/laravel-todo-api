@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 use App\Models\Project;
 use App\Models\Task;
+use App\Notifications\TaskAssignedNotification;
+use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
     $this->user = $this->authenticateUser();
+
+	Notification::fake();
 });
 
 test('assign task successfully', function () {
@@ -24,6 +28,12 @@ test('assign task successfully', function () {
     $response->assertOk()
         ->assertJsonIsObject()
         ->assertJsonPath('assigned_to.id', $this->user->id);
+
+	Notification::assertSentTo(
+        [$this->user], TaskAssignedNotification::class
+    );
+
+    Notification::assertCount(1);
 
     $this->assertDatabaseHas('tasks', [
         'id' => $task->id,
@@ -51,6 +61,8 @@ test('user unauthorized', function () {
         'project_id' => $project->id,
         'assigned_to_id' => $this->user->id,
     ]);
+
+	Notification::assertNothingSent();
 });
 
 test('task not found', function () {
@@ -82,4 +94,6 @@ test('user not found', function () {
         'project_id' => $project->id,
         'assigned_to_id' => $this->user->id,
     ]);
+
+	Notification::assertNothingSent();
 });
